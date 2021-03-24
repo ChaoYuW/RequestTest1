@@ -22,6 +22,9 @@
     
     
 }
+- (IBAction)testClick:(UIButton *)sender {
+    [self get];
+}
 //url-request-session-task-resume
 /*
  初始化：1.初始化session；2.设置很多默认值
@@ -43,7 +46,7 @@
     // request : 请求行+请求头+请求体
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer.timeoutInterval = 5;
-    manager.securityPolicy = [self securityPolicy];
+//    manager.securityPolicy = [self securityPolicy];
     [manager GET:urlStr parameters:dic headers:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
