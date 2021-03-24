@@ -7,43 +7,105 @@
 //
 
 #import "AppDelegate.h"
+#import "MainViewController.h"
+#import "AFNetworking.h"
+#import "AFNetworkActivityIndicatorManager.h"
+#import <CoreTelephony/CTCellularData.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    
+    NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024 diskCapacity:20 * 1024 * 1024 diskPath:nil];
+    [NSURLCache setSharedURLCache:URLCache];
+    
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    
+    
+    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:[MainViewController new]];
+    self.window.rootViewController = rootNav;
+    
     [self.window makeKeyAndVisible];
+    
+    if (__IPHONE_10_0) {
+        [self cellularData];
+    }else{
+        [self startMonitoringNetwork];
+    }
     return YES;
 }
+#pragma mark - 网络权限监控
+- (void)cellularData{
+    
+    CTCellularData *cellularData = [[CTCellularData alloc] init];
+    
+    cellularData.cellularDataRestrictionDidUpdateNotifier = ^(CTCellularDataRestrictedState state) {
+        
+        switch (state) {
+            case kCTCellularDataRestrictedStateUnknown:
+                NSLog(@"不明错误.....");
+                break;
+            case kCTCellularDataRestricted:
+                NSLog(@"没有授权....");
+                [self testBD]; // 默认没有授权 ... 发起短小网络 弹框
+                break;
+            case kCTCellularDataNotRestricted:
+                NSLog(@"授权了////");
+                [self startMonitoringNetwork];
+                break;
+            default:
+                break;
+        }
+    };
+}
+#pragma mark - startMonitoringNetwork
 
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+- (void)startMonitoringNetwork{
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:
+                NSLog(@"未知网络,请检查互联网");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"无网络,请检查互联网");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"连接蜂窝网络");
+                [self testBD];
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"WiFi网络");
+                [self testBD];
+                break;
+            default:
+                break;
+        }
+    }];
+    [manager startMonitoring];
+
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+#pragma mark - 网络测试接口
+- (void)testBD{
+    NSString *urlString = @"http://api.douban.com/v2/movie/top250";
+    NSDictionary *dic = @{@"start":@(1),
+                          @"count":@(5)
+                          };
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlString parameters:dic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"请求成功:%@---%@",task,responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"错误提示:%@---%@",task,error);
+    }];
 }
 
 @end
