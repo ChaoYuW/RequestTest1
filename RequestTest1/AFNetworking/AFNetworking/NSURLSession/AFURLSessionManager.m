@@ -146,6 +146,7 @@ typedef void (^AFURLSessionTaskCompletionHandler)(NSURLResponse *response, id re
     {
         //拿到上传下载期望的数据大小
         progress.totalUnitCount = NSURLSessionTransferSizeUnknown;
+        //将上传与下载进度和 任务绑定在一起，直接cancel suspend resume进度条，可以cancel...任务
         //设置这两个NSProgress对应的cancel、pause和resume这三个状态，正好对应session task的cancel、suspend和resume三个状态
         progress.cancellable = YES;
         progress.cancellationHandler = ^{
@@ -641,15 +642,15 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
     self.reachabilityManager = [AFNetworkReachabilityManager sharedManager];
 #endif
     //为什么要收集: cancel resume supend : task : id
-    //delegate= value taskid = key
+    //delegate= value taskid = key 设置存储NSURL task与AFURLSessionManagerTaskDelegate的词典（重点，在AFNet中，每一个task都会被匹配一个AFURLSessionManagerTaskDelegate 来做task的delegate事件处理） ===============
     self.mutableTaskDelegatesKeyedByTaskIdentifier = [[NSMutableDictionary alloc] init];
 
-    //使用NSLock确保线程安全
+    //使用NSLock确保线程安全 //  设置AFURLSessionManagerTaskDelegate 词典的锁，确保词典在多线程访问时的线程安全
     self.lock = [[NSLock alloc] init];
     self.lock.name = AFURLSessionManagerLockName;
 
     //异步的获取当前session的所有未完成的task。其实讲道理来说在初始化中调用这个方法应该里面一个task都不会有
-    //后台任务重新回来初始化session，可能就会有先前的任务
+    //后台任务重新回来初始化session，可能就会有先前的任务 // 置空task关联的代理
     //https://github.com/AFNetworking/AFNetworking/issues/3499
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         for (NSURLSessionDataTask *task in dataTasks) {
@@ -679,6 +680,7 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
     
     @synchronized (self) {
         if (!_session) {
+            //注意代理，代理的继承，实际上NSURLSession去判断了，你实现了哪个方法会去调用，包括子代理的方法！
             _session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration delegate:self delegateQueue:self.operationQueue];
         }
     }
@@ -741,11 +743,13 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
     NSParameterAssert(task);
     NSParameterAssert(delegate);
 
-    //加锁确保中间代码块是原子操作，线程安全
+    //加锁保证字典线程安全
     [self.lock lock];
     //将delegate存入字典，以taskid作为key，说明每个task都有各自的代理
+    // 将AF delegate放入以taskIdentifier标记的词典中（同一个NSURLSession中的taskIdentifier是唯一的
     // task--->delegate
     self.mutableTaskDelegatesKeyedByTaskIdentifier[@(task.taskIdentifier)] = delegate;
+    //添加task开始和暂停的通知
     [self addNotificationObserverForTask:task];
     [self.lock unlock];
 }
@@ -1129,14 +1133,12 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
 }
 
 #pragma mark - NSURLSessionDelegate
+//当前这个session已经失效时，该代理方法被调用。
 /*
-当前session失效，会调用
-如果你使用finishTasksAndInvalidate函数使该session失效，
-那么session首先会先完成最后一个task，然后再调用URLSession:didBecomeInvalidWithError:代理方法，
-如果你调用invalidateAndCancel方法来使session失效，那么该session会立即调用这个代理方法。
-
-
-*/
+ 如果你使用finishTasksAndInvalidate函数使该session失效，
+ 那么session首先会先完成最后一个task，然后再调用URLSession:didBecomeInvalidWithError:代理方法，
+ 如果你调用invalidateAndCancel方法来使session失效，那么该session会立即调用上面的代理方法。
+ */
 - (void)URLSession:(NSURLSession *)session
 didBecomeInvalidWithError:(NSError *)error
 {

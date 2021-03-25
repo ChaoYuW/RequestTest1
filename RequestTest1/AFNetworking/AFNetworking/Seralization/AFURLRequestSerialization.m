@@ -120,6 +120,24 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
 /*
  百分号编码count=5*# ASCII uinicode
  count=5
+ @{
+  @"name" : @"bang",
+  @"phone": @{@"mobile": @"xx", @"home": @"xx"},
+  @"families": @[@"father", @"mother"],
+  @"nums": [NSSet setWithObjects:@"1", @"2", nil]
+ }
+ ->
+ @[
+  field: @"name", value: @"bang",
+  field: @"phone[mobile]", value: @"xx",
+  field: @"phone[home]", value: @"xx",
+  field: @"families[]", value: @"father",
+  field: @"families[]", value: @"mother",
+  field: @"nums", value: @"1",
+  field: @"nums", value: @"2",
+ ]
+ ->
+ name=bang&phone[mobile]=xx&phone[home]=xx&families[]=father&families[]=mother&nums=1&num=2
  */
 - (NSString *)URLEncodedStringValue {
     if (!self.value || [self.value isEqual:[NSNull null]]) {
@@ -163,6 +181,7 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {//key=coun
     /*
      根据需要排列的对象的description来进行升序排列，并且selector使用的是compare:
      因为对象的description返回的是NSString，所以此处compare:使用的是NSString的compare函数
+     即@[@"foo", @"bar", @"bae"] ----> @[@"bae", @"bar",@"foo"]
      */
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"description" ascending:YES selector:@selector(compare:)];
 
