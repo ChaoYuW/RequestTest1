@@ -8,6 +8,8 @@
 
 #import "MainViewController.h"
 #import "AFNetworking.h"
+#import "SDWebImage.h"
+#import "UIImageView+WebCache.h"
 
 @interface MainViewController ()
 
@@ -19,7 +21,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    UIImageView *imagView = [[UIImageView alloc] init];
     
+    [imagView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@""] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+    }];
     
 }
 - (IBAction)testClick:(UIButton *)sender {

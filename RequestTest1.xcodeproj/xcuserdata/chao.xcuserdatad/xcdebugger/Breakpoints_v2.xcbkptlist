@@ -14,8 +14,8 @@
             filePath = "RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "593"
-            endingLineNumber = "593"
+            startingLineNumber = "601"
+            endingLineNumber = "601"
             landmarkName = "-requestBySerializingRequest:withParameters:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "604"
-            endingLineNumber = "604"
+            startingLineNumber = "612"
+            endingLineNumber = "612"
             landmarkName = "-requestBySerializingRequest:withParameters:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "601"
-            endingLineNumber = "601"
+            startingLineNumber = "609"
+            endingLineNumber = "609"
             landmarkName = "-requestBySerializingRequest:withParameters:error:"
             landmarkType = "7">
          </BreakpointContent>
@@ -68,7 +68,7 @@
             landmarkType = "9">
             <Locations>
                <Location
-                  uuid = "15DC6E25-FC95-4564-B21F-1E1559ACAD53 - 952ba389be81e241"
+                  uuid = "15DC6E25-FC95-4564-B21F-1E1559ACAD53 - 952ba389be81e4b3"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -78,12 +78,12 @@
                   urlString = "file:///Users/chao/Documents/GitHub/RequestTest1/RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "144"
-                  endingLineNumber = "144"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
                   offsetFromSymbolStart = "105">
                </Location>
                <Location
-                  uuid = "15DC6E25-FC95-4564-B21F-1E1559ACAD53 - 952ba389be81e241"
+                  uuid = "15DC6E25-FC95-4564-B21F-1E1559ACAD53 - 952ba389be81e4b3"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -93,11 +93,203 @@
                   urlString = "file:///Users/chao/Documents/GitHub/RequestTest1/RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "144"
-                  endingLineNumber = "144"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
                   offsetFromSymbolStart = "125">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "02D20F8E-0528-4BAC-97F9-A3211055A77B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/NSURLSession/AFHTTPSessionManager.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
+            landmarkName = "-dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "02D20F8E-0528-4BAC-97F9-A3211055A77B - eae65efec6d67cdc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AFHTTPSessionManager dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:]"
+                  moduleName = "RequestTest1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chao/Documents/GitHub/RequestTest1/RequestTest1/AFNetworking/AFNetworking/NSURLSession/AFHTTPSessionManager.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "286"
+                  endingLineNumber = "286"
+                  offsetFromSymbolStart = "774">
+               </Location>
+               <Location
+                  uuid = "02D20F8E-0528-4BAC-97F9-A3211055A77B - eae65efec6d67cdc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AFHTTPSessionManager dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:]"
+                  moduleName = "RequestTest1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chao/Documents/GitHub/RequestTest1/RequestTest1/AFNetworking/AFNetworking/NSURLSession/AFHTTPSessionManager.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "286"
+                  endingLineNumber = "286"
+                  offsetFromSymbolStart = "794">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3942A4F8-65A5-4355-8F39-60DC28326415"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
+            landmarkName = "-requestWithMethod:URLString:parameters:error:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "3942A4F8-65A5-4355-8F39-60DC28326415 - e9ff516db59c1355"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AFHTTPRequestSerializer requestWithMethod:URLString:parameters:error:]"
+                  moduleName = "RequestTest1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chao/Documents/GitHub/RequestTest1/RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "478"
+                  endingLineNumber = "478"
+                  offsetFromSymbolStart = "989">
+               </Location>
+               <Location
+                  uuid = "3942A4F8-65A5-4355-8F39-60DC28326415 - e9ff516db59c1355"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[AFHTTPRequestSerializer requestWithMethod:URLString:parameters:error:]"
+                  moduleName = "RequestTest1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/chao/Documents/GitHub/RequestTest1/RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "478"
+                  endingLineNumber = "478"
+                  offsetFromSymbolStart = "1009">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "313F3291-7648-4C24-AB7C-5D161837CEA4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "483"
+            endingLineNumber = "483"
+            landmarkName = "-requestWithMethod:URLString:parameters:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AD46D229-7F89-4DCB-9EA2-22AAFD9555A2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/Seralization/AFURLRequestSerialization.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
+            landmarkName = "AFQueryStringPairsFromKeyAndValue(key, value)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AD9DE3EE-68B1-4D97-9C67-690083DB1711"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/NSURLSession/AFHTTPSessionManager.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
+            landmarkName = "-dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F1FA61E0-062C-416F-9156-6645E0CF4B67"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/NSURLSession/AFHTTPSessionManager.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "305"
+            endingLineNumber = "305"
+            landmarkName = "-dataTaskWithHTTPMethod:URLString:parameters:headers:uploadProgress:downloadProgress:success:failure:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4178E3BF-1B40-42C8-BCA5-B9DAEC808750"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/NSURLSession/AFURLSessionManager.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "939"
+            endingLineNumber = "939"
+            landmarkName = "-dataTaskWithRequest:uploadProgress:downloadProgress:completionHandler:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0B40D0A0-DA4E-479E-AF96-EF900F62E8B7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RequestTest1/AFNetworking/AFNetworking/NSURLSession/AFURLSessionManager.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "768"
+            endingLineNumber = "768"
+            landmarkName = "-addDelegateForDataTask:uploadProgress:downloadProgress:completionHandler:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

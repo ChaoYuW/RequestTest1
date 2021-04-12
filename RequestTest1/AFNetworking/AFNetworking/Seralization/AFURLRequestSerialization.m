@@ -62,7 +62,7 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
     static NSString * const kAFCharactersSubDelimitersToEncode = @"!$&'()*+,;=";
     // 使用NSMutableCharacterSet进行过滤 先得到允许的字符集
     NSMutableCharacterSet * allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-    //获取目前系统中最终需要做百分号编码转换的字符集合
+    //获取目前系统中最终需要做百分号编码转换的字符集合 //将以上两种设置为排除
     [allowedCharacterSet removeCharactersInString:[kAFCharactersGeneralDelimitersToEncode stringByAppendingString:kAFCharactersSubDelimitersToEncode]];
 
     // FIXME: https://github.com/AFNetworking/AFNetworking/pull/3028
@@ -192,9 +192,16 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {//key=coun
         /*
          allkeys:count/start
          */
+        /*
+            [dictionary.allKeys sortedArrayUsingDescriptors:@[ sortDescriptor ]
+            对所有的字典里的nestedKey进行排序
+        */
         for (id nestedKey in [dictionary.allKeys sortedArrayUsingDescriptors:@[ sortDescriptor ]]) {
             id nestedValue = dictionary[nestedKey];//nestedkey=count nestedvalue=5
             if (nestedValue) {
+                //如果指明了key、则为二级字典。用key[nestedKey]进行遍历
+                //比如@{aaa:@{bbb:ccc}};就会被变成aaa[bbb]作为key
+                //如果没有传入nestedKey、则直接为一级字典。用subkey进行遍历
                 [mutableQueryStringComponents addObjectsFromArray:AFQueryStringPairsFromKeyAndValue((key ? [NSString stringWithFormat:@"%@[%@]", key, nestedKey] : nestedKey), nestedValue)];
             }
         }
@@ -471,6 +478,7 @@ forHTTPHeaderField:(NSString *)field
     for (NSString *keyPath in self.mutableObservedChangedKeyPaths) {
         //通过kvc动态的给mutableRequest添加value
         [mutableRequest setValue:[self valueForKeyPath:keyPath] forKey:keyPath];
+        NSLog(@"[%@ %@]",keyPath,[self valueForKeyPath:keyPath]);
     }
     //将传入的参数进行编码，拼接到url后并返回 coount=5&start=1
     mutableRequest = [[self requestBySerializingRequest:mutableRequest withParameters:parameters error:error] mutableCopy];
