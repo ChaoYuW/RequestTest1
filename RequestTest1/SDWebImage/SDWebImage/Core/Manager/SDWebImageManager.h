@@ -105,11 +105,13 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
 /**
  * The image cache used by manager to query image cache.
  */
+//缓存对象
 @property (strong, nonatomic, readonly, nonnull) id<SDImageCache> imageCache;
 
 /**
  * The image loader used by manager to load image.
  */
+//下载对象
 @property (strong, nonatomic, readonly, nonnull) id<SDImageLoader> imageLoader;
 
 /**
@@ -206,6 +208,7 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
  * Allows to specify instance of cache and image loader used with image manager.
  * @return new instance of `SDWebImageManager` with specified cache and loader.
  */
+//根据特定的cache和downloader生成一个新的SDWebImageManager
 - (nonnull instancetype)initWithCache:(nonnull id<SDImageCache>)cache loader:(nonnull id<SDImageLoader>)loader NS_DESIGNATED_INITIALIZER;
 
 /**
@@ -233,6 +236,7 @@ SDWebImageManager *manager = [SDWebImageManager sharedManager];
  *
  * @return Returns an instance of SDWebImageCombinedOperation, which you can cancel the loading process.
  */
+//下载图片的关键方法，第一个参数图片url，第二个参数设置下载多样操作，第三个参数下载中进度block，第四个参数下载完成后回调
 - (nullable SDWebImageCombinedOperation *)loadImageWithURL:(nullable NSURL *)url
                                                    options:(SDWebImageOptions)options
                                                   progress:(nullable SDImageLoaderProgressBlock)progressBlock

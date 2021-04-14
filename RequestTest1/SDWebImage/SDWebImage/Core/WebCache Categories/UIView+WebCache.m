@@ -127,7 +127,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
                 progressBlock(receivedSize, expectedSize, targetURL);
             }
         };
-        //这个方法的代码在下一段中贴出来讲解。
+        
         //可以理解为已经得到了图片
         @weakify(self);
         id <SDWebImageOperation> operation = [manager loadImageWithURL:url options:options context:context progress:combinedProgressBlock completed:^(UIImage *image, NSData *data, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {

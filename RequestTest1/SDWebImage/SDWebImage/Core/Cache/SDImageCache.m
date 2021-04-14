@@ -731,6 +731,10 @@
 
 - (id<SDWebImageOperation>)queryImageForKey:(NSString *)key options:(SDWebImageOptions)options context:(nullable SDWebImageContext *)context cacheType:(SDImageCacheType)cacheType completion:(nullable SDImageCacheQueryCompletionBlock)completionBlock {
     SDImageCacheOptions cacheOptions = 0;
+    //根据SDWebImageOptions 设置 SDImageCacheOptions。
+    // cacheOptions|= SDImageCacheQueryDataWhenInMemory 做位或计算，将结果赋值给cacheOptions
+    // 等价于 cacheOptions = cacheOptions | SDImageCacheQueryDataWhenInMemory；
+    // 按位或 每一位都进行比较 相同的位都是1 ，结果的那一位就是1.排除其他的影响。
     if (options & SDWebImageQueryMemoryData) cacheOptions |= SDImageCacheQueryMemoryData;
     if (options & SDWebImageQueryMemoryDataSync) cacheOptions |= SDImageCacheQueryMemoryDataSync;
     if (options & SDWebImageQueryDiskDataSync) cacheOptions |= SDImageCacheQueryDiskDataSync;

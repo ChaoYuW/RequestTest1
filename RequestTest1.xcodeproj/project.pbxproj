@@ -373,120 +373,16 @@
 		E51115B72624291B00F84BAA /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				E51115C02624291B00F84BAA /* NSButton+WebCache.h */,
-				E51115F12624291B00F84BAA /* NSButton+WebCache.m */,
-				E51115C42624291B00F84BAA /* NSData+ImageContentType.h */,
-				E51116082624291B00F84BAA /* NSData+ImageContentType.m */,
-				E51115F62624291B00F84BAA /* NSImage+Compatibility.h */,
-				E51115BB2624291B00F84BAA /* NSImage+Compatibility.m */,
-				E51115FC2624291B00F84BAA /* SDAnimatedImage.h */,
-				E51115D22624291B00F84BAA /* SDAnimatedImage.m */,
-				E51116152624291B00F84BAA /* SDAnimatedImagePlayer.h */,
-				E51115D72624291B00F84BAA /* SDAnimatedImagePlayer.m */,
-				E51115BA2624291B00F84BAA /* SDAnimatedImageRep.h */,
-				E51115F72624291B00F84BAA /* SDAnimatedImageRep.m */,
-				E51115FA2624291B00F84BAA /* SDAnimatedImageView.h */,
-				E51115D32624291B00F84BAA /* SDAnimatedImageView.m */,
-				E51115F42624291B00F84BAA /* SDAnimatedImageView+WebCache.h */,
-				E51115BD2624291B00F84BAA /* SDAnimatedImageView+WebCache.m */,
-				E51115BC2624291B00F84BAA /* SDDiskCache.h */,
-				E51115F52624291B00F84BAA /* SDDiskCache.m */,
-				E511160D2624291B00F84BAA /* SDGraphicsImageRenderer.h */,
-				E51115DF2624291B00F84BAA /* SDGraphicsImageRenderer.m */,
-				E51116202624291B00F84BAA /* SDImageAPNGCoder.h */,
-				E51115E82624291B00F84BAA /* SDImageAPNGCoder.m */,
-				E51115D02624291B00F84BAA /* SDImageCache.h */,
-				E51115FD2624291B00F84BAA /* SDImageCache.m */,
-				E51115D52624291B00F84BAA /* SDImageCacheConfig.h */,
-				E51116162624291B00F84BAA /* SDImageCacheConfig.m */,
-				E51115DB2624291B00F84BAA /* SDImageCacheDefine.h */,
-				E51116112624291B00F84BAA /* SDImageCacheDefine.m */,
-				E51115C72624291B00F84BAA /* SDImageCachesManager.h */,
-				E51116042624291B00F84BAA /* SDImageCachesManager.m */,
-				E51115F22624291B00F84BAA /* SDImageCoder.h */,
-				E51115BF2624291B00F84BAA /* SDImageCoder.m */,
-				E511161A2624291B00F84BAA /* SDImageCoderHelper.h */,
-				E51115EC2624291B00F84BAA /* SDImageCoderHelper.m */,
-				E51116282624291B00F84BAA /* SDImageCodersManager.h */,
-				E51115E12624291B00F84BAA /* SDImageCodersManager.m */,
-				E51115CE2624291B00F84BAA /* SDImageFrame.h */,
-				E51116002624291B00F84BAA /* SDImageFrame.m */,
-				E51115CF2624291B00F84BAA /* SDImageGIFCoder.h */,
-				E51115FE2624291B00F84BAA /* SDImageGIFCoder.m */,
-				E51115C12624291B00F84BAA /* SDImageGraphics.h */,
-				E511160C2624291B00F84BAA /* SDImageGraphics.m */,
-				E51115F82624291B00F84BAA /* SDImageHEICCoder.h */,
-				E51115B92624291B00F84BAA /* SDImageHEICCoder.m */,
-				E51116022624291B00F84BAA /* SDImageIOAnimatedCoder.h */,
-				E51115CB2624291B00F84BAA /* SDImageIOAnimatedCoder.m */,
-				E51115BE2624291B00F84BAA /* SDImageIOCoder.h */,
-				E51115F32624291B00F84BAA /* SDImageIOCoder.m */,
-				E51116102624291B00F84BAA /* SDImageLoader.h */,
-				E51115DC2624291B00F84BAA /* SDImageLoader.m */,
-				E51115CA2624291B00F84BAA /* SDImageLoadersManager.h */,
-				E51116032624291B00F84BAA /* SDImageLoadersManager.m */,
-				E51115C62624291B00F84BAA /* SDImageTransformer.h */,
-				E51116072624291B00F84BAA /* SDImageTransformer.m */,
-				E51116232624291B00F84BAA /* SDMemoryCache.h */,
-				E51115E52624291B00F84BAA /* SDMemoryCache.m */,
-				E51115D62624291B00F84BAA /* SDWebImageCacheKeyFilter.h */,
-				E51116172624291B00F84BAA /* SDWebImageCacheKeyFilter.m */,
-				E511160F2624291B00F84BAA /* SDWebImageCacheSerializer.h */,
-				E51115DD2624291B00F84BAA /* SDWebImageCacheSerializer.m */,
-				E51116222624291B00F84BAA /* SDWebImageCompat.h */,
-				E51115E72624291B00F84BAA /* SDWebImageCompat.m */,
-				E51115F02624291B00F84BAA /* SDWebImageDefine.h */,
-				E51116192624291B00F84BAA /* SDWebImageDefine.m */,
-				E51116122624291B00F84BAA /* SDWebImageDownloader.h */,
-				E51115DA2624291B00F84BAA /* SDWebImageDownloader.m */,
-				E51115D12624291B00F84BAA /* SDWebImageDownloaderConfig.h */,
-				E51115FB2624291B00F84BAA /* SDWebImageDownloaderConfig.m */,
-				E511160A2624291B00F84BAA /* SDWebImageDownloaderDecryptor.h */,
-				E51115C52624291B00F84BAA /* SDWebImageDownloaderDecryptor.m */,
-				E51115CC2624291B00F84BAA /* SDWebImageDownloaderOperation.h */,
-				E51116012624291B00F84BAA /* SDWebImageDownloaderOperation.m */,
-				E51115E32624291B00F84BAA /* SDWebImageDownloaderRequestModifier.h */,
-				E51116272624291B00F84BAA /* SDWebImageDownloaderRequestModifier.m */,
-				E511161F2624291B00F84BAA /* SDWebImageDownloaderResponseModifier.h */,
-				E51115E92624291B00F84BAA /* SDWebImageDownloaderResponseModifier.m */,
-				E51116212624291B00F84BAA /* SDWebImageError.h */,
-				E51115EA2624291B00F84BAA /* SDWebImageError.m */,
-				E511160E2624291B00F84BAA /* SDWebImageIndicator.h */,
-				E51115DE2624291B00F84BAA /* SDWebImageIndicator.m */,
-				E51116062624291B00F84BAA /* SDWebImageManager.h */,
-				E51115C92624291B00F84BAA /* SDWebImageManager.m */,
-				E511160B2624291B00F84BAA /* SDWebImageOperation.h */,
-				E51115C22624291B00F84BAA /* SDWebImageOperation.m */,
-				E51115ED2624291B00F84BAA /* SDWebImageOptionsProcessor.h */,
-				E511161B2624291B00F84BAA /* SDWebImageOptionsProcessor.m */,
-				E511161E2624291B00F84BAA /* SDWebImagePrefetcher.h */,
-				E51115EB2624291B00F84BAA /* SDWebImagePrefetcher.m */,
-				E51115C82624291B00F84BAA /* SDWebImageTransition.h */,
-				E51116052624291B00F84BAA /* SDWebImageTransition.m */,
-				E51115E22624291B00F84BAA /* UIButton+WebCache.h */,
-				E51116262624291B00F84BAA /* UIButton+WebCache.m */,
-				E51115B82624291B00F84BAA /* UIImage+ExtendedCacheData.h */,
-				E51115F92624291B00F84BAA /* UIImage+ExtendedCacheData.m */,
-				E51116182624291B00F84BAA /* UIImage+ForceDecode.h */,
-				E51115D42624291B00F84BAA /* UIImage+ForceDecode.m */,
-				E51116292624291B00F84BAA /* UIImage+GIF.h */,
-				E51115E02624291B00F84BAA /* UIImage+GIF.m */,
-				E51115D92624291B00F84BAA /* UIImage+MemoryCacheCost.h */,
-				E51116132624291B00F84BAA /* UIImage+MemoryCacheCost.m */,
-				E51115E62624291B00F84BAA /* UIImage+Metadata.h */,
-				E51116242624291B00F84BAA /* UIImage+Metadata.m */,
-				E51116252624291B00F84BAA /* UIImage+MultiFormat.h */,
-				E51115E42624291B00F84BAA /* UIImage+MultiFormat.m */,
-				E51116142624291B00F84BAA /* UIImage+Transform.h */,
-				E51115D82624291B00F84BAA /* UIImage+Transform.m */,
-				E51115FF2624291B00F84BAA /* UIImageView+HighlightedWebCache.h */,
-				E51115CD2624291B00F84BAA /* UIImageView+HighlightedWebCache.m */,
-				E51115C32624291B00F84BAA /* UIImageView+WebCache.h */,
-				E51116092624291B00F84BAA /* UIImageView+WebCache.m */,
-				E51115EE2624291B00F84BAA /* UIView+WebCache.h */,
-				E511161D2624291B00F84BAA /* UIView+WebCache.m */,
-				E51115EF2624291B00F84BAA /* UIView+WebCacheOperation.h */,
-				E511161C2624291B00F84BAA /* UIView+WebCacheOperation.m */,
+				E53956212626DDB70042E431 /* WebCache Categories */,
+				E53956202626DD340042E431 /* Categories */,
+				E539561F2626DCF10042E431 /* Utils */,
+				E539561E2626DCB50042E431 /* AnimatedImage */,
+				E539561D2626DC900042E431 /* Transformer */,
+				E539561C2626DC700042E431 /* Prefetcher */,
+				E539561B2626DB7A0042E431 /* Decoder */,
+				E539561A2626DB290042E431 /* Cache */,
+				E53956192626DA800042E431 /* Downloader */,
+				E53956182626D9AE0042E431 /* Manager */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -621,6 +517,190 @@
 				E5128782260AD01900E6ED50 /* AFNetworkReachabilityManager.m */,
 			);
 			path = Reachability;
+			sourceTree = "<group>";
+		};
+		E53956182626D9AE0042E431 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				E51115ED2624291B00F84BAA /* SDWebImageOptionsProcessor.h */,
+				E511161B2624291B00F84BAA /* SDWebImageOptionsProcessor.m */,
+				E511160F2624291B00F84BAA /* SDWebImageCacheSerializer.h */,
+				E51115DD2624291B00F84BAA /* SDWebImageCacheSerializer.m */,
+				E51115D62624291B00F84BAA /* SDWebImageCacheKeyFilter.h */,
+				E51116172624291B00F84BAA /* SDWebImageCacheKeyFilter.m */,
+				E51116062624291B00F84BAA /* SDWebImageManager.h */,
+				E51115C92624291B00F84BAA /* SDWebImageManager.m */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		E53956192626DA800042E431 /* Downloader */ = {
+			isa = PBXGroup;
+			children = (
+				E51116102624291B00F84BAA /* SDImageLoader.h */,
+				E51115DC2624291B00F84BAA /* SDImageLoader.m */,
+				E51115CA2624291B00F84BAA /* SDImageLoadersManager.h */,
+				E51116032624291B00F84BAA /* SDImageLoadersManager.m */,
+				E51116122624291B00F84BAA /* SDWebImageDownloader.h */,
+				E51115DA2624291B00F84BAA /* SDWebImageDownloader.m */,
+				E51115D12624291B00F84BAA /* SDWebImageDownloaderConfig.h */,
+				E51115FB2624291B00F84BAA /* SDWebImageDownloaderConfig.m */,
+				E511160A2624291B00F84BAA /* SDWebImageDownloaderDecryptor.h */,
+				E51115C52624291B00F84BAA /* SDWebImageDownloaderDecryptor.m */,
+				E51115CC2624291B00F84BAA /* SDWebImageDownloaderOperation.h */,
+				E51116012624291B00F84BAA /* SDWebImageDownloaderOperation.m */,
+				E51115E32624291B00F84BAA /* SDWebImageDownloaderRequestModifier.h */,
+				E51116272624291B00F84BAA /* SDWebImageDownloaderRequestModifier.m */,
+				E511161F2624291B00F84BAA /* SDWebImageDownloaderResponseModifier.h */,
+				E51115E92624291B00F84BAA /* SDWebImageDownloaderResponseModifier.m */,
+			);
+			path = Downloader;
+			sourceTree = "<group>";
+		};
+		E539561A2626DB290042E431 /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				E51115BC2624291B00F84BAA /* SDDiskCache.h */,
+				E51115F52624291B00F84BAA /* SDDiskCache.m */,
+				E51115D02624291B00F84BAA /* SDImageCache.h */,
+				E51115FD2624291B00F84BAA /* SDImageCache.m */,
+				E51115D52624291B00F84BAA /* SDImageCacheConfig.h */,
+				E51116162624291B00F84BAA /* SDImageCacheConfig.m */,
+				E51115DB2624291B00F84BAA /* SDImageCacheDefine.h */,
+				E51116112624291B00F84BAA /* SDImageCacheDefine.m */,
+				E51115C72624291B00F84BAA /* SDImageCachesManager.h */,
+				E51116042624291B00F84BAA /* SDImageCachesManager.m */,
+				E51116232624291B00F84BAA /* SDMemoryCache.h */,
+				E51115E52624291B00F84BAA /* SDMemoryCache.m */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		E539561B2626DB7A0042E431 /* Decoder */ = {
+			isa = PBXGroup;
+			children = (
+				E511160D2624291B00F84BAA /* SDGraphicsImageRenderer.h */,
+				E51115DF2624291B00F84BAA /* SDGraphicsImageRenderer.m */,
+				E51116282624291B00F84BAA /* SDImageCodersManager.h */,
+				E51115E12624291B00F84BAA /* SDImageCodersManager.m */,
+				E51115CF2624291B00F84BAA /* SDImageGIFCoder.h */,
+				E51115FE2624291B00F84BAA /* SDImageGIFCoder.m */,
+				E51116022624291B00F84BAA /* SDImageIOAnimatedCoder.h */,
+				E51115CB2624291B00F84BAA /* SDImageIOAnimatedCoder.m */,
+				E51115BE2624291B00F84BAA /* SDImageIOCoder.h */,
+				E51115F32624291B00F84BAA /* SDImageIOCoder.m */,
+				E51116202624291B00F84BAA /* SDImageAPNGCoder.h */,
+				E51115E82624291B00F84BAA /* SDImageAPNGCoder.m */,
+				E51115F22624291B00F84BAA /* SDImageCoder.h */,
+				E51115BF2624291B00F84BAA /* SDImageCoder.m */,
+				E511161A2624291B00F84BAA /* SDImageCoderHelper.h */,
+				E51115EC2624291B00F84BAA /* SDImageCoderHelper.m */,
+				E51115CE2624291B00F84BAA /* SDImageFrame.h */,
+				E51116002624291B00F84BAA /* SDImageFrame.m */,
+				E51115C12624291B00F84BAA /* SDImageGraphics.h */,
+				E511160C2624291B00F84BAA /* SDImageGraphics.m */,
+				E51115F82624291B00F84BAA /* SDImageHEICCoder.h */,
+				E51115B92624291B00F84BAA /* SDImageHEICCoder.m */,
+			);
+			path = Decoder;
+			sourceTree = "<group>";
+		};
+		E539561C2626DC700042E431 /* Prefetcher */ = {
+			isa = PBXGroup;
+			children = (
+				E511161E2624291B00F84BAA /* SDWebImagePrefetcher.h */,
+				E51115EB2624291B00F84BAA /* SDWebImagePrefetcher.m */,
+			);
+			path = Prefetcher;
+			sourceTree = "<group>";
+		};
+		E539561D2626DC900042E431 /* Transformer */ = {
+			isa = PBXGroup;
+			children = (
+				E51115C62624291B00F84BAA /* SDImageTransformer.h */,
+				E51116072624291B00F84BAA /* SDImageTransformer.m */,
+			);
+			path = Transformer;
+			sourceTree = "<group>";
+		};
+		E539561E2626DCB50042E431 /* AnimatedImage */ = {
+			isa = PBXGroup;
+			children = (
+				E51115FC2624291B00F84BAA /* SDAnimatedImage.h */,
+				E51115D22624291B00F84BAA /* SDAnimatedImage.m */,
+				E51116152624291B00F84BAA /* SDAnimatedImagePlayer.h */,
+				E51115D72624291B00F84BAA /* SDAnimatedImagePlayer.m */,
+				E51115BA2624291B00F84BAA /* SDAnimatedImageRep.h */,
+				E51115F72624291B00F84BAA /* SDAnimatedImageRep.m */,
+				E51115FA2624291B00F84BAA /* SDAnimatedImageView.h */,
+				E51115D32624291B00F84BAA /* SDAnimatedImageView.m */,
+				E51115F42624291B00F84BAA /* SDAnimatedImageView+WebCache.h */,
+				E51115BD2624291B00F84BAA /* SDAnimatedImageView+WebCache.m */,
+			);
+			path = AnimatedImage;
+			sourceTree = "<group>";
+		};
+		E539561F2626DCF10042E431 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E51116222624291B00F84BAA /* SDWebImageCompat.h */,
+				E51115E72624291B00F84BAA /* SDWebImageCompat.m */,
+				E51115F02624291B00F84BAA /* SDWebImageDefine.h */,
+				E51116192624291B00F84BAA /* SDWebImageDefine.m */,
+				E51116212624291B00F84BAA /* SDWebImageError.h */,
+				E51115EA2624291B00F84BAA /* SDWebImageError.m */,
+				E511160E2624291B00F84BAA /* SDWebImageIndicator.h */,
+				E51115DE2624291B00F84BAA /* SDWebImageIndicator.m */,
+				E511160B2624291B00F84BAA /* SDWebImageOperation.h */,
+				E51115C22624291B00F84BAA /* SDWebImageOperation.m */,
+				E51115C82624291B00F84BAA /* SDWebImageTransition.h */,
+				E51116052624291B00F84BAA /* SDWebImageTransition.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		E53956202626DD340042E431 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				E51115C42624291B00F84BAA /* NSData+ImageContentType.h */,
+				E51116082624291B00F84BAA /* NSData+ImageContentType.m */,
+				E51115F62624291B00F84BAA /* NSImage+Compatibility.h */,
+				E51115BB2624291B00F84BAA /* NSImage+Compatibility.m */,
+				E51115B82624291B00F84BAA /* UIImage+ExtendedCacheData.h */,
+				E51115F92624291B00F84BAA /* UIImage+ExtendedCacheData.m */,
+				E51116182624291B00F84BAA /* UIImage+ForceDecode.h */,
+				E51115D42624291B00F84BAA /* UIImage+ForceDecode.m */,
+				E51116292624291B00F84BAA /* UIImage+GIF.h */,
+				E51115E02624291B00F84BAA /* UIImage+GIF.m */,
+				E51115D92624291B00F84BAA /* UIImage+MemoryCacheCost.h */,
+				E51116132624291B00F84BAA /* UIImage+MemoryCacheCost.m */,
+				E51115E62624291B00F84BAA /* UIImage+Metadata.h */,
+				E51116242624291B00F84BAA /* UIImage+Metadata.m */,
+				E51116252624291B00F84BAA /* UIImage+MultiFormat.h */,
+				E51115E42624291B00F84BAA /* UIImage+MultiFormat.m */,
+				E51116142624291B00F84BAA /* UIImage+Transform.h */,
+				E51115D82624291B00F84BAA /* UIImage+Transform.m */,
+				E51115EF2624291B00F84BAA /* UIView+WebCacheOperation.h */,
+				E511161C2624291B00F84BAA /* UIView+WebCacheOperation.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		E53956212626DDB70042E431 /* WebCache Categories */ = {
+			isa = PBXGroup;
+			children = (
+				E51115C02624291B00F84BAA /* NSButton+WebCache.h */,
+				E51115F12624291B00F84BAA /* NSButton+WebCache.m */,
+				E51115E22624291B00F84BAA /* UIButton+WebCache.h */,
+				E51116262624291B00F84BAA /* UIButton+WebCache.m */,
+				E51115FF2624291B00F84BAA /* UIImageView+HighlightedWebCache.h */,
+				E51115CD2624291B00F84BAA /* UIImageView+HighlightedWebCache.m */,
+				E51115C32624291B00F84BAA /* UIImageView+WebCache.h */,
+				E51116092624291B00F84BAA /* UIImageView+WebCache.m */,
+				E51115EE2624291B00F84BAA /* UIView+WebCache.h */,
+				E511161D2624291B00F84BAA /* UIView+WebCache.m */,
+			);
+			path = "WebCache Categories";
 			sourceTree = "<group>";
 		};
 		E5A3490C19B55DF300AC8856 = {
@@ -1000,7 +1080,7 @@
 		E5A3494219B55DF400AC8856 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1018,7 +1098,7 @@
 		E5A3494319B55DF400AC8856 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1026,6 +1106,7 @@
 				INFOPLIST_FILE = "RequestTest1/RequestTest1-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

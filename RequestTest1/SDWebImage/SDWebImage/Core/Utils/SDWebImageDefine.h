@@ -54,18 +54,22 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
      * By default, when a URL fail to be downloaded, the URL is blacklisted so the library won't keep trying.
      * This flag disable this blacklisting.
      */
+//    失败重试，有一个加载失败的url数组。每次都在数组中查询一下，
+//        如果设置失败重试了，就开始下载。如果设置了失败不重试，就不下载。
     SDWebImageRetryFailed = 1 << 0,
     
     /**
      * By default, image downloads are started during UI interactions, this flags disable this feature,
      * leading to delayed download on UIScrollView deceleration for instance.
      */
+//    低优先级
     SDWebImageLowPriority = 1 << 1,
     
     /**
      * This flag enables progressive download, the image is displayed progressively during download as a browser would do.
      * By default, the image is only displayed once completely downloaded.
      */
+//    渐进下载，类似于浏览器的的方式。
     SDWebImageProgressiveLoad = 1 << 2,
     
     /**
@@ -76,42 +80,49 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
      *
      * Use this flag only if you can't make your URLs static with embedded cache busting parameter.
      */
+//    刷新内存，下完完成之后进行比对，如果图片变了 就刷新缓存中的图片
     SDWebImageRefreshCached = 1 << 3,
     
     /**
      * In iOS 4+, continue the download of the image if the app goes to background. This is achieved by asking the system for
      * extra time in background to let the request finish. If the background task expires the operation will be cancelled.
      */
+//    后台下载，当设置了后台操作的时候，就会自动进行，超期了自动停止
     SDWebImageContinueInBackground = 1 << 4,
     
     /**
      * Handles cookies stored in NSHTTPCookieStore by setting
      * NSMutableURLRequest.HTTPShouldHandleCookies = YES;
      */
+//    设置cookies
     SDWebImageHandleCookies = 1 << 5,
     
     /**
      * Enable to allow untrusted SSL certificates.
      * Useful for testing purposes. Use with caution in production.
      */
+//    允许无效的证书，如果url是https的，但是没有证书的话，用这个选项
     SDWebImageAllowInvalidSSLCertificates = 1 << 6,
     
     /**
      * By default, images are loaded in the order in which they were queued. This flag moves them to
      * the front of the queue.
      */
+//    高优先级
     SDWebImageHighPriority = 1 << 7,
     
     /**
      * By default, placeholder images are loaded while the image is loading. This flag will delay the loading
      * of the placeholder image until after the image has finished loading.
      */
+//    延迟设置占位图
     SDWebImageDelayPlaceholder = 1 << 8,
     
     /**
      * We usually don't apply transform on animated images as most transformers could not manage animated images.
      * Use this flag to transform them anyway.
      */
+    //转换动画图片，当设置了这个，所有的动画图片都会被转换
     SDWebImageTransformAnimatedImage = 1 << 9,
     
     /**
@@ -119,6 +130,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
      * have the hand before setting the image (apply a filter or add it with cross-fade animation for instance)
      * Use this flag if you want to manually set the image in the completion when success
      */
+    //取消下载完成之后 自动设置图片。
     SDWebImageAvoidAutoSetImage = 1 << 10,
     
     /**
@@ -129,6 +141,7 @@ typedef NS_OPTIONS(NSUInteger, SDWebImageOptions) {
      * This flags effect the progressive and animated images as well from v5.5.0. Previously does not.
      * @note If you need detail controls, it's better to use context option `imageThumbnailPixelSize` and `imagePreserveAspectRatio` instead.
      */
+//    取消自动缩放，
     SDWebImageScaleDownLargeImages = 1 << 11,
     
     /**

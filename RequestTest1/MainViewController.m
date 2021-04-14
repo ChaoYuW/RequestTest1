@@ -12,6 +12,7 @@
 #import "UIImageView+WebCache.h"
 
 @interface MainViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *imageV;
 
 @end
 
@@ -21,16 +22,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIImageView *imagView = [[UIImageView alloc] init];
-    
-    [imagView sd_setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@""] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        
-    }];
-    
 }
 - (IBAction)testClick:(UIButton *)sender {
     [self get];
 }
+
+- (IBAction)loadImage:(UIButton *)sender {
+    [self.imageV sd_imageIndicator];
+    self.imageV.sd_imageIndicator = SDWebImageActivityIndicator.grayLargeIndicator;
+    [self.imageV sd_setImageWithURL:[NSURL URLWithString:@"https://hard.storage.shmedia.tech/84b21fa20e7340b08014dfef88ef888c_21.jpg"] placeholderImage:[UIImage imageNamed:@""] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        
+    }];
+}
+
+
 //url-request-session-task-resume
 /*
  初始化：1.初始化session；2.设置很多默认值

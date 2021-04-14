@@ -572,6 +572,10 @@ didReceiveResponse:(NSURLResponse *)response
     UIImage *cachedImage = context[SDWebImageContextLoaderCachedImage];
     
     SDWebImageDownloaderOptions downloaderOptions = 0;
+    //根据SDWebImageOptions 设置 SDWebImageDownloaderOptions。
+    // cacheOptions|= SDImageCacheQueryDataWhenInMemory   做位或计算，将结果赋值给cacheOptions
+    // 等价于 cacheOptions = cacheOptions | SDImageCacheQueryDataWhenInMemory；
+    // 按位或 每一位都进行比较 相同的位都是1 ，结果的那一位就是1.排除其他的影响。
     if (options & SDWebImageLowPriority) downloaderOptions |= SDWebImageDownloaderLowPriority;
     if (options & SDWebImageProgressiveLoad) downloaderOptions |= SDWebImageDownloaderProgressiveLoad;
     if (options & SDWebImageRefreshCached) downloaderOptions |= SDWebImageDownloaderUseNSURLCache;
