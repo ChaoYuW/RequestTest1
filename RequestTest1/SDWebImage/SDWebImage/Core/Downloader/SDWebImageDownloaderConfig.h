@@ -32,17 +32,26 @@ typedef NS_ENUM(NSInteger, SDWebImageDownloaderExecutionOrder) {
  Gets the default downloader config used for shared instance or initialization when it does not provide any downloader config. Such as `SDWebImageDownloader.sharedDownloader`.
  @note You can modify the property on default downloader config, which can be used for later created downloader instance. The already created downloader instance does not get affected.
  */
+/**
+ //单例，默认下载配置最多6个并发，15s超时
+ */
 @property (nonatomic, class, readonly, nonnull) SDWebImageDownloaderConfig *defaultDownloaderConfig;
 
 /**
  * The maximum number of concurrent downloads.
  * Defaults to 6.
  */
+/**
+ //下载的最大并发数6个
+ */
 @property (nonatomic, assign) NSInteger maxConcurrentDownloads;
 
 /**
  * The timeout value (in seconds) for each download operation.
  * Defaults to 15.0.
+ */
+/**
+ //下载的超时时间 默认15s
  */
 @property (nonatomic, assign) NSTimeInterval downloadTimeout;
 
@@ -53,12 +62,19 @@ typedef NS_ENUM(NSInteger, SDWebImageDownloaderExecutionOrder) {
  * @note This value may enhance the performance if you don't want progress callback too frequently.
  * Defaults to 0, which means each time we receive the new data from URLSession, we callback the progressBlock immediately.
  */
+/**
+ //最小界面progress的刷新间隔
+ //当设置progressive decoding feature，我们需要展示进度，该属性表示刷新间隔
+ */
 @property (nonatomic, assign) double minimumProgressInterval;
 
 /**
  * The custom session configuration in use by NSURLSession. If you don't provide one, we will use `defaultSessionConfiguration` instead.
  * Defatuls to nil.
  * @note This property does not support dynamic changes, means it's immutable after the downloader instance initialized.
+ */
+/**
+ //NSURLSession的默认配置，当下载开始之后不支持动态修改
  */
 @property (nonatomic, strong, nullable) NSURLSessionConfiguration *sessionConfiguration;
 
@@ -69,11 +85,17 @@ typedef NS_ENUM(NSInteger, SDWebImageDownloaderExecutionOrder) {
  * Defaults to nil.
  * @note Passing `NSOperation<SDWebImageDownloaderOperation>` to set as default. Passing `nil` will revert to `SDWebImageDownloaderOperation`.
  */
+/**
+ //SDWebImageDownloaderOperation下载类
+ */
 @property (nonatomic, assign, nullable) Class operationClass;
 
 /**
  * Changes download operations execution order.
  * Defaults to `SDWebImageDownloaderFIFOExecutionOrder`.
+ */
+/**
+ //图片的下载执行顺序，默认是先进先出，SDWebImageDownloaderFIFOExecutionOrder
  */
 @property (nonatomic, assign) SDWebImageDownloaderExecutionOrder executionOrder;
 
@@ -81,17 +103,26 @@ typedef NS_ENUM(NSInteger, SDWebImageDownloaderExecutionOrder) {
  * Set the default URL credential to be set for request operations.
  * Defaults to nil.
  */
+/**
+ //默认是nil，为图片加载request设置一个ssl证书对象
+ */
 @property (nonatomic, copy, nullable) NSURLCredential *urlCredential;
 
 /**
  * Set username using for HTTP Basic authentication.
  * Defaults to nil.
  */
+/**
+ //默认是nil，为http的Basic 认证设置用户名
+ */
 @property (nonatomic, copy, nullable) NSString *username;
 
 /**
  * Set password using for HTTP Basic authentication.
  * Defaults to nil.
+ */
+/**
+ //默认是nil，为http的Basic 认证设置密码
  */
 @property (nonatomic, copy, nullable) NSString *password;
 

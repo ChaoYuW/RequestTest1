@@ -156,7 +156,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         [self.session finishTasksAndInvalidate];
     }
 }
-
+//设置header中的key value
 - (void)setValue:(nullable NSString *)value forHTTPHeaderField:(nullable NSString *)field {
     if (!field) {
         return;
@@ -165,7 +165,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     [self.HTTPHeaders setValue:value forKey:field];
     SD_UNLOCK(self.HTTPHeadersLock);
 }
-
+//回去当前header中的value
 - (nullable NSString *)valueForHTTPHeaderField:(nullable NSString *)field {
     if (!field) {
         return nil;
@@ -201,12 +201,15 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         }
         return nil;
     }
-    
+    //添加信号量
     SD_LOCK(self.operationsLock);
     id downloadOperationCancelToken;
+    //获取当前的operation
     NSOperation<SDWebImageDownloaderOperation> *operation = [self.URLOperations objectForKey:url];
     // There is a case that the operation may be marked as finished or cancelled, but not been removed from `self.URLOperations`.
+    //如果发现operation为nil/完成/取消，但是并没有从当前的urlOperations中移除
     if (!operation || operation.isFinished || operation.isCancelled) {
+        //创建一个当前任务的operation请求
         operation = [self createDownloaderOperationWithUrl:url options:options context:context];
         if (!operation) {
             SD_UNLOCK(self.operationsLock);
@@ -223,6 +226,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
                 return;
             }
             SD_LOCK(self.operationsLock);
+            //请求完成之后再当前的URLOperations中移除
             [self.URLOperations removeObjectForKey:url];
             SD_UNLOCK(self.operationsLock);
         };
@@ -231,14 +235,17 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
         // Add operation to operation queue only after all configuration done according to Apple's doc.
         // `addOperation:` does not synchronously execute the `operation.completionBlock` so this will not cause deadlock.
+        //添加到队列中
         [self.downloadQueue addOperation:operation];
     } else {
         // When we reuse the download operation to attach more callbacks, there may be thread safe issue because the getter of callbacks may in another queue (decoding queue or delegate queue)
         // So we lock the operation here, and in `SDWebImageDownloaderOperation`, we use `@synchonzied (self)`, to ensure the thread safe between these two classes.
         @synchronized (operation) {
+            //包含进度和complete的字典
             downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
         }
         if (!operation.isExecuting) {
+            //还没有执行，那么修改其优先级
             if (options & SDWebImageDownloaderHighPriority) {
                 operation.queuePriority = NSOperationQueuePriorityHigh;
             } else if (options & SDWebImageDownloaderLowPriority) {
@@ -250,6 +257,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     }
     SD_UNLOCK(self.operationsLock);
     
+    //包装token，包含url、request、downloader、downloadOperationCancelToken等
     SDWebImageDownloadToken *token = [[SDWebImageDownloadToken alloc] initWithDownloadOperation:operation];
     token.url = url;
     token.request = operation.request;
@@ -257,7 +265,14 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     
     return token;
 }
+/**
+ 创建一个SDWebImageDownloaderOperation对象来做下载操作，指定缓存策略、cookie策略、自定义请求头域等
 
+ @param url url
+ @param options 下载options
+ @param context 自定义的context
+ @return 返回一个SDWebImageDownloaderOperation，管理一个下载请求
+ */
 - (nullable NSOperation<SDWebImageDownloaderOperation> *)createDownloaderOperationWithUrl:(nonnull NSURL *)url
                                                                                   options:(SDWebImageDownloaderOptions)options
                                                                                   context:(nullable SDWebImageContext *)context {
@@ -267,10 +282,14 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     }
     
     // In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests if told otherwise
+    //请求的缓存策略
+    //如果设置了SDWebImageDownloaderUseNSURLCache那么NSURLRequestUseProtocolCachePolicy
+    //否则忽略request中的缓存 NSURLRequestReloadIgnoringLocalCacheData
     NSURLRequestCachePolicy cachePolicy = options & SDWebImageDownloaderUseNSURLCache ? NSURLRequestUseProtocolCachePolicy : NSURLRequestReloadIgnoringLocalCacheData;
     NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:cachePolicy timeoutInterval:timeoutInterval];
     mutableRequest.HTTPShouldHandleCookies = SD_OPTIONS_CONTAINS(options, SDWebImageDownloaderHandleCookies);
     mutableRequest.HTTPShouldUsePipelining = YES;
+    //请求头的设置
     SD_LOCK(self.HTTPHeadersLock);
     mutableRequest.allHTTPHeaderFields = self.HTTPHeaders;
     SD_UNLOCK(self.HTTPHeadersLock);
@@ -284,6 +303,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     }
     
     // Request Modifier
+    //获取外部提供的requestModifier
     id<SDWebImageDownloaderRequestModifier> requestModifier;
     if ([context valueForKey:SDWebImageContextDownloadRequestModifier]) {
         requestModifier = [context valueForKey:SDWebImageContextDownloadRequestModifier];
@@ -293,6 +313,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     
     NSURLRequest *request;
     if (requestModifier) {
+        //返回一个外部设置好的request信息
         NSURLRequest *modifiedRequest = [requestModifier modifiedRequestWithRequest:[mutableRequest copy]];
         // If modified request is nil, early return
         if (!modifiedRequest) {
@@ -327,26 +348,32 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
     context = [mutableContext copy];
     
     // Operation Class
+    //获取SDWebImageDownloaderOperation类对象
     Class operationClass = self.config.operationClass;
     if (operationClass && [operationClass isSubclassOfClass:[NSOperation class]] && [operationClass conformsToProtocol:@protocol(SDWebImageDownloaderOperation)]) {
         // Custom operation class
     } else {
         operationClass = [SDWebImageDownloaderOperation class];
     }
+    //获取一个operation对象
     NSOperation<SDWebImageDownloaderOperation> *operation = [[operationClass alloc] initWithRequest:request inSession:self.session options:options context:context];
     
     if ([operation respondsToSelector:@selector(setCredential:)]) {
+        //配置验证信息
         if (self.config.urlCredential) {
+            //ssl验证
             operation.credential = self.config.urlCredential;
         } else if (self.config.username && self.config.password) {
+            //用户名密码验证
             operation.credential = [NSURLCredential credentialWithUser:self.config.username password:self.config.password persistence:NSURLCredentialPersistenceForSession];
         }
     }
         
     if ([operation respondsToSelector:@selector(setMinimumProgressInterval:)]) {
+        //progress的时间间隔
         operation.minimumProgressInterval = MIN(MAX(self.config.minimumProgressInterval, 0), 1);
     }
-    
+    //operation的优先级
     if (options & SDWebImageDownloaderHighPriority) {
         operation.queuePriority = NSOperationQueuePriorityHigh;
     } else if (options & SDWebImageDownloaderLowPriority) {
@@ -357,6 +384,7 @@ static void * SDWebImageDownloaderContext = &SDWebImageDownloaderContext;
         // Emulate LIFO execution order by systematically, each previous adding operation can dependency the new operation
         // This can gurantee the new operation to be execulated firstly, even if when some operations finished, meanwhile you appending new operations
         // Just make last added operation dependents new operation can not solve this problem. See test case #test15DownloaderLIFOExecutionOrder
+        //如果是LIFO这种模式，则让前面的operation依赖于最新添加的operation
         for (NSOperation *pendingOperation in self.downloadQueue.operations) {
             [pendingOperation addDependency:operation];
         }

@@ -11,6 +11,7 @@
 #import "AFNetworking.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import <CoreTelephony/CTCellularData.h>
+#import "SDWebImage.h"
 
 @implementation AppDelegate
 
@@ -20,6 +21,15 @@
     
     NSURLCache *URLCache = [[NSURLCache alloc] initWithMemoryCapacity:4 * 1024 * 1024 diskCapacity:20 * 1024 * 1024 diskPath:nil];
     [NSURLCache setSharedURLCache:URLCache];
+    
+    //监听内存警告
+     [[NSNotificationCenter defaultCenter]addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+            NSLog(@"内存暴涨");
+            // 1.取消正在下载的操作
+            [[SDWebImageManager sharedManager] cancelAll];
+            // 2.清除内存缓存
+            [[SDWebImageManager sharedManager].imageCache clearWithCacheType:SDImageCacheTypeAll completion:nil];
+      }];
     
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     

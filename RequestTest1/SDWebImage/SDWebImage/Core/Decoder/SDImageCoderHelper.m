@@ -25,6 +25,7 @@ static const size_t kBytesPerPixel = 4;
 static const size_t kBitsPerComponent = 8;
 
 static const CGFloat kBytesPerMB = 1024.0f * 1024.0f;
+//1MB可以存储多少像素
 static const CGFloat kPixelsPerMB = kBytesPerMB / kBytesPerPixel;
 /*
  * Defines the maximum size in MB of the decoded image when the flag `SDWebImageScaleDownLargeImages` is set
@@ -214,12 +215,17 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
     });
     return colorSpace;
 }
-
+//判断是否有alpha
 + (BOOL)CGImageContainsAlpha:(CGImageRef)cgImage {
     if (!cgImage) {
         return NO;
     }
+    //获取图片的alpha信息
     CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(cgImage);
+    //kCGImageAlphaNone没有alpha
+    //kCGImageAlphaNoneSkipFirst在RGB透明通道下，alpha没有在最高有效位
+    //kCGImageAlphaNoneSkipLast在RGB透明通道下，alpha没有在最低有效位
+    //这三者都得包括
     BOOL hasAlpha = !(alphaInfo == kCGImageAlphaNone ||
                       alphaInfo == kCGImageAlphaNoneSkipFirst ||
                       alphaInfo == kCGImageAlphaNoneSkipLast);
@@ -234,17 +240,20 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
     if (!cgImage) {
         return NULL;
     }
+    //获取图片的像素宽高
     size_t width = CGImageGetWidth(cgImage);
     size_t height = CGImageGetHeight(cgImage);
     if (width == 0 || height == 0) return NULL;
     size_t newWidth;
     size_t newHeight;
+    //查看当前图片的展示方式是否正确，对width/height进行调整
     switch (orientation) {
         case kCGImagePropertyOrientationLeft:
         case kCGImagePropertyOrientationLeftMirrored:
         case kCGImagePropertyOrientationRight:
         case kCGImagePropertyOrientationRightMirrored: {
             // These orientation should swap width & height
+            //kCGImagePropertyOrientationRightMirrored这种情况应该交换宽高
             newWidth = height;
             newHeight = width;
         }
@@ -255,22 +264,29 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
         }
             break;
     }
-    
+    //是否有alpha通道
     BOOL hasAlpha = [self CGImageContainsAlpha:cgImage];
     // iOS prefer BGRA8888 (premultiplied) or BGRX8888 bitmapInfo for screen rendering, which is same as `UIGraphicsBeginImageContext()` or `- [CALayer drawInContext:]`
     // Though you can use any supported bitmapInfo (see: https://developer.apple.com/library/content/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB ) and let Core Graphics reorder it when you call `CGContextDrawImage`
     // But since our build-in coders use this bitmapInfo, this can have a little performance benefit
+    //像素格式中的字节顺序是系统提供的32位主机字节顺序
     CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Host;
+    //将像素格式中用位域技术添加alpha信息
     bitmapInfo |= hasAlpha ? kCGImageAlphaPremultipliedFirst : kCGImageAlphaNoneSkipFirst;
+    //获得位图的上下文
+    //默认的颜色空间是CGColorSpaceCreateDeviceRGB()
+    //bytesPerRow 每一行的位图大小设置为0，系统进行自动计算并且进行优化
+    //每一个像素的颜色分量bit数是8
     CGContextRef context = CGBitmapContextCreate(NULL, newWidth, newHeight, 8, 0, [self colorSpaceGetDeviceRGB], bitmapInfo);
     if (!context) {
         return NULL;
     }
-    
+    //图片进行反转，保证展示出来的是没有transform的图片
     // Apply transform
     CGAffineTransform transform = SDCGContextTransformFromOrientation(orientation, CGSizeMake(newWidth, newHeight));
     CGContextConcatCTM(context, transform);
     CGContextDrawImage(context, CGRectMake(0, 0, width, height), cgImage); // The rect is bounding box of CGImage, don't swap width & height
+    //获得当前上下文中的位图对应的图片
     CGImageRef newImageRef = CGBitmapContextCreateImage(context);
     CGContextRelease(context);
     
@@ -348,10 +364,11 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
 }
 
 + (UIImage *)decodedAndScaledDownImageWithImage:(UIImage *)image limitBytes:(NSUInteger)bytes {
+    //图片是否支持解压缩
     if (![self shouldDecodeImage:image]) {
         return image;
     }
-    
+    //图片不需要处理。直接解压缩
     if (![self shouldScaleDownImage:image limitBytes:bytes]) {
         return [self decodedImageWithImage:image];
     }
@@ -371,18 +388,22 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
         CGImageRef sourceImageRef = image.CGImage;
         
         CGSize sourceResolution = CGSizeZero;
+        //获取原始图片的宽度和高度
         sourceResolution.width = CGImageGetWidth(sourceImageRef);
         sourceResolution.height = CGImageGetHeight(sourceImageRef);
+        //获取原始图片的总像素
         CGFloat sourceTotalPixels = sourceResolution.width * sourceResolution.height;
         // Determine the scale ratio to apply to the input image
         // that results in an output image of the defined size.
         // see kDestImageSizeMB, and how it relates to destTotalPixels.
+        //根据一定的比例设置目标图片的宽度和高度
         CGFloat imageScale = sqrt(destTotalPixels / sourceTotalPixels);
         CGSize destResolution = CGSizeZero;
         destResolution.width = (int)(sourceResolution.width * imageScale);
         destResolution.height = (int)(sourceResolution.height * imageScale);
         
         // device color space
+        //获取原始图片的像素空间。默认是RGB
         CGColorSpaceRef colorspaceRef = [self colorSpaceGetDeviceRGB];
         BOOL hasAlpha = [self CGImageContainsAlpha:sourceImageRef];
         // iOS display alpha info (BGRA8888/BGRX8888)
@@ -403,6 +424,7 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
         if (destContext == NULL) {
             return image;
         }
+        //设置目标图片的质量
         CGContextSetInterpolationQuality(destContext, kCGInterpolationHigh);
         
         // Now define the size of the rectangle to be used for the
@@ -465,6 +487,7 @@ static const CGFloat kDestSeemOverlap = 2.0f;   // the numbers of pixels to over
         if (destImageRef == NULL) {
             return image;
         }
+        //生成处理结束以后的图片
 #if SD_MAC
         UIImage *destImage = [[UIImage alloc] initWithCGImage:destImageRef scale:image.scale orientation:kCGImagePropertyOrientationUp];
 #else

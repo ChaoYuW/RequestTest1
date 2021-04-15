@@ -55,14 +55,17 @@ typedef NSMapTable<NSString *, id<SDWebImageOperation>> SDOperationsDictionary;
 - (void)sd_cancelImageLoadOperationWithKey:(nullable NSString *)key {
     if (key) {
         // Cancel in progress downloader from queue
+        //NSMapTable 其实就是字典，key是强引用，value是弱引用
         SDOperationsDictionary *operationDictionary = [self sd_operationDictionary];
         id<SDWebImageOperation> operation;
-        
+        //递归锁防止数据冲突
         @synchronized (self) {
             operation = [operationDictionary objectForKey:key];
         }
         if (operation) {
             if ([operation conformsToProtocol:@protocol(SDWebImageOperation)]) {
+                //取消任务
+                //内部调用[NSURLSessionTask cancel]结束当前的任务
                 [operation cancel];
             }
             @synchronized (self) {

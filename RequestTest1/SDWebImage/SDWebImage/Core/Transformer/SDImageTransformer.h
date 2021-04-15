@@ -42,6 +42,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 
  @return The cache key to appended after the original cache key. Should not be nil.
  */
+/**
+ @return 在原始缓存中最后添加的自定义cache key
+ */
 @property (nonatomic, copy, readonly, nonnull) NSString *transformerKey;
 
 /**
@@ -50,6 +53,12 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
  @param image The image to be transformed
  @param key The cache key associated to the image. This arg is a hint for image source, not always useful and should be nullable. In the future we will remove this arg.
  @return The transformed image, or nil if transform failed
+ */
+/**
+ 调用当前方法实现图片的处理
+ @param image  处理之后的图片
+ @param key 原始图片关联的cache key
+ @return 处理之后的图片
  */
 - (nullable UIImage *)transformedImageWithImage:(nonnull UIImage *)image forKey:(nonnull NSString *)key API_DEPRECATED("The key arg will be removed in the future. Update your code and don't rely on that.", macos(10.10, API_TO_BE_DEPRECATED), ios(8.0, API_TO_BE_DEPRECATED), tvos(9.0, API_TO_BE_DEPRECATED), watchos(2.0, API_TO_BE_DEPRECATED));
 
@@ -60,6 +69,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 /**
  Pipeline transformer. Which you can bind multiple transformers together to let the image to be transformed one by one in order and generate the final image.
  @note Because transformers are lightweight, if you want to append or arrange transformers, create another pipeline transformer instead. This class is considered as immutable.
+ */
+/**
+ //可以传入一个NSArray<SDImageTransformer>数组，按顺序做转换
  */
 @interface SDImagePipelineTransformer : NSObject <SDImageTransformer>
 
@@ -79,6 +91,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 
 /**
  Image round corner transformer
+ */
+/**
+ 添加圆角
  */
 @interface SDImageRoundCornerTransformer: NSObject <SDImageTransformer>
 
@@ -116,6 +131,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 /**
  Image resizing transformer
  */
+/**
+ 调整大小
+ */
 @interface SDImageResizingTransformer : NSObject <SDImageTransformer>
 
 /**
@@ -136,6 +154,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 /**
  Image cropping transformer
  */
+/**
+ 裁剪
+ */
 @interface SDImageCroppingTransformer : NSObject <SDImageTransformer>
 
 /**
@@ -150,6 +171,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 
 /**
  Image flipping transformer
+ */
+/**
+ 翻转
  */
 @interface SDImageFlippingTransformer : NSObject <SDImageTransformer>
 
@@ -170,6 +194,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 
 /**
  Image rotation transformer
+ */
+/**
+ 旋转
  */
 @interface SDImageRotationTransformer : NSObject <SDImageTransformer>
 
@@ -194,6 +221,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 /**
  Image tint color transformer
  */
+/**
+ 添加色彩
+ */
 @interface SDImageTintTransformer : NSObject <SDImageTransformer>
 
 /**
@@ -211,6 +241,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 /**
  Image blur effect transformer
  */
+/**
+ 添加模糊
+ */
 @interface SDImageBlurTransformer : NSObject <SDImageTransformer>
 
 /**
@@ -226,6 +259,9 @@ FOUNDATION_EXPORT NSString * _Nullable SDThumbnailedKeyForKey(NSString * _Nullab
 #if SD_UIKIT || SD_MAC
 /**
  Core Image filter transformer
+ */
+/**
+ 添加滤镜
  */
 @interface SDImageFilterTransformer: NSObject <SDImageTransformer>
 

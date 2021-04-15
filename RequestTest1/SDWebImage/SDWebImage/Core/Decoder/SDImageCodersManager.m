@@ -32,7 +32,7 @@
     });
     return instance;
 }
-
+//初始化本地可以进行code的类SDImageGIFCoder、SDImageAPNGCoder等都是单例
 - (instancetype)init {
     if (self = [super init]) {
         // initialize with default coders
@@ -116,12 +116,13 @@
     
     return image;
 }
-
+//进行压缩处理
 - (NSData *)encodedDataWithImage:(UIImage *)image format:(SDImageFormat)format options:(nullable SDImageCoderOptions *)options {
     if (!image) {
         return nil;
     }
     NSArray<id<SDImageCoder>> *coders = self.coders;
+    //根据对应的格式，交给指定的encode类去进行压缩处理
     for (id<SDImageCoder> coder in coders.reverseObjectEnumerator) {
         if ([coder canEncodeToFormat:format]) {
             return [coder encodedDataWithImage:image format:format options:options];

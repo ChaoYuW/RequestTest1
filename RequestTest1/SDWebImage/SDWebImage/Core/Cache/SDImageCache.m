@@ -30,7 +30,7 @@
 @implementation SDImageCache
 
 #pragma mark - Singleton, init, dealloc
-
+//单例方法
 + (nonnull instancetype)sharedImageCache {
     static dispatch_once_t once;
     static id instance;
@@ -52,7 +52,7 @@
                        diskCacheDirectory:(nullable NSString *)directory {
     return [self initWithNamespace:ns diskCacheDirectory:directory config:SDImageCacheConfig.defaultCacheConfig];
 }
-
+//初始化主要用到了下面的方法
 - (nonnull instancetype)initWithNamespace:(nonnull NSString *)ns
                        diskCacheDirectory:(nullable NSString *)directory
                                    config:(nullable SDImageCacheConfig *)config {
@@ -60,6 +60,7 @@
         NSAssert(ns, @"Cache namespace should not be nil");
         
         // Create IO serial queue 创建ioQueue串行队列负责对硬盘的读写
+        //在串行队列异步线程中进行数据的IO
         _ioQueue = dispatch_queue_create("com.hackemist.SDImageCache", DISPATCH_QUEUE_SERIAL);
         
         if (!config) {
@@ -81,6 +82,7 @@
         }
         
         NSAssert([config.diskCacheClass conformsToProtocol:@protocol(SDDiskCache)], @"Custom disk cache class must conform to `SDDiskCache` protocol");
+        //初始化磁盘缓存工具类
         _diskCache = [[config.diskCacheClass alloc] initWithCachePath:_diskCachePath config:_config];
         
         // Check and migrate disk cache directory if need
@@ -178,12 +180,17 @@
         return;
     }
     // if memory cache is enabled
+    //将image对象加入可以放入内存中
     if (toMemory && self.config.shouldCacheImagesInMemory) {
         NSUInteger cost = image.sd_memoryCost;
+        //将图片image放入NSCache中的NSMapTable中，并记录当前总共占用多少内存
         [self.memoryCache setObject:image forKey:key cost:cost];
     }
     
     if (toDisk) {
+        //假如放入磁盘，这个过程中会有比较大的内存消耗，需要放入自动释放池
+        //放入磁盘中的是二进制data，并且包含指定的图片格式信息
+        //放入磁盘中
         dispatch_async(self.ioQueue, ^{
             @autoreleasepool {
                 NSData *data = imageData;
@@ -200,6 +207,7 @@
                             format = SDImageFormatGIF;
                         } else {
                             // If we do not have any data to detect image format, check whether it contains alpha channel to use PNG or JPEG format
+                            //如果包含alpha，那么PNG，否则JPEG
                             if ([SDImageCoderHelper CGImageContainsAlpha:image.CGImage]) {
                                 format = SDImageFormatPNG;
                             } else {
@@ -207,8 +215,10 @@
                             }
                         }
                     }
+                    //假如没有data，有image，那么按照指定的格式对图片进行压缩
                     data = [[SDImageCodersManager sharedManager] encodedDataWithImage:image format:format options:nil];
                 }
+                //放入磁盘中
                 [self _storeImageDataToDisk:data forKey:key];
                 if (image) {
                     // Check extended data

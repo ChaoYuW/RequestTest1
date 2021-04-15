@@ -107,12 +107,16 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
 }
 
 #pragma mark - Utils
-
+// 获取循环次数
 + (NSUInteger)imageLoopCountWithSource:(CGImageSourceRef)source {
+    // 默认循环次数，父类不指定，子类会指定一个值，默认为1
     NSUInteger loopCount = self.defaultLoopCount;
+    // 从source中获取图片属性
     NSDictionary *imageProperties = (__bridge_transfer NSDictionary *)CGImageSourceCopyProperties(source, NULL);
+    // 获取具体的图片属性，比如png为kCGImagePropertyPNGDictionary，HEIC为kSDCGImagePropertyHEICSDictionary，由子类指定
     NSDictionary *containerProperties = imageProperties[self.dictionaryProperty];
     if (containerProperties) {
+        // 从属性中获取loopcount
         NSNumber *containerLoopCount = containerProperties[self.loopCountProperty];
         if (containerLoopCount != nil) {
             loopCount = containerLoopCount.unsignedIntegerValue;
@@ -156,18 +160,21 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     CFRelease(cfFrameProperties);
     return frameDuration;
 }
-
+// 创建某一个位置的帧图片
 + (UIImage *)createFrameAtIndex:(NSUInteger)index source:(CGImageSourceRef)source scale:(CGFloat)scale preserveAspectRatio:(BOOL)preserveAspectRatio thumbnailSize:(CGSize)thumbnailSize options:(NSDictionary *)options {
     // Some options need to pass to `CGImageSourceCopyPropertiesAtIndex` before `CGImageSourceCreateImageAtIndex`, or ImageIO will ignore them because they parse once :)
     // Parse the image properties
+    // 获取图片某一个索引位置的属性
     NSDictionary *properties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(source, index, (__bridge CFDictionaryRef)options);
+    // 获取宽高
     NSUInteger pixelWidth = [properties[(__bridge NSString *)kCGImagePropertyPixelWidth] unsignedIntegerValue];
     NSUInteger pixelHeight = [properties[(__bridge NSString *)kCGImagePropertyPixelHeight] unsignedIntegerValue];
+    // 获取方向
     CGImagePropertyOrientation exifOrientation = (CGImagePropertyOrientation)[properties[(__bridge NSString *)kCGImagePropertyOrientation] unsignedIntegerValue];
     if (!exifOrientation) {
         exifOrientation = kCGImagePropertyOrientationUp;
     }
-    
+    // 获取类型
     CFStringRef uttype = CGImageSourceGetType(source);
     // Check vector format
     BOOL isVector = NO;
@@ -199,10 +206,13 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
             NSUInteger rasterizationDPI = maxPixelSize * DPIPerPixel;
             decodingOptions[kSDCGImageSourceRasterizationDPI] = @(rasterizationDPI);
         }
+        // 得到这个索引位置的图片
         imageRef = CGImageSourceCreateImageAtIndex(source, index, (__bridge CFDictionaryRef)[decodingOptions copy]);
     } else {
+        // 设置缩略图是否进行变换
         decodingOptions[(__bridge NSString *)kCGImageSourceCreateThumbnailWithTransform] = @(preserveAspectRatio);
         CGFloat maxPixelSize;
+        // 如果设置了变换
         if (preserveAspectRatio) {
             CGFloat pixelRatio = pixelWidth / pixelHeight;
             CGFloat thumbnailRatio = thumbnailSize.width / thumbnailSize.height;
@@ -214,8 +224,11 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         } else {
             maxPixelSize = MAX(thumbnailSize.width, thumbnailSize.height);
         }
+        // 设置缩略图的最大尺寸
         decodingOptions[(__bridge NSString *)kCGImageSourceThumbnailMaxPixelSize] = @(maxPixelSize);
+        // 无论如何都设置缩略图
         decodingOptions[(__bridge NSString *)kCGImageSourceCreateThumbnailFromImageAlways] = @(YES);
+        // 创建某个位置的缩略图
         imageRef = CGImageSourceCreateThumbnailAtIndex(source, index, (__bridge CFDictionaryRef)[decodingOptions copy]);
     }
     if (!imageRef) {
@@ -228,6 +241,7 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
             exifOrientation = kCGImagePropertyOrientationUp;
         } else {
             // `CGImageSourceCreateThumbnailAtIndex` take only pixel dimension, if not `preserveAspectRatio`, we should manual scale to the target size
+            // CGImageSourceCreateThumbnailAtIndex 只是像素维度的缩小，我们需要真正的缩小图片大小
             CGImageRef scaledImageRef = [SDImageCoderHelper CGImageCreateScaled:imageRef size:thumbnailSize];
             CGImageRelease(imageRef);
             imageRef = scaledImageRef;
@@ -248,17 +262,20 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
 - (BOOL)canDecodeFromData:(nullable NSData *)data {
     return ([NSData sd_imageFormatForImageData:data] == self.class.imageFormat);
 }
+// 解码图片
+//解码图片，解码图片其实就是从用户传的属性中获取缩放因子，是否保持长宽比，缩略图大小，是否只解码第一帧，然后获取当前imageSouce所有的图片数量，如果只解码第一张图片或者图片数量就是一张，那么直接调用上面的创建一帧图片就可以了，如果是多张图片如gif，那么就循环创建
 
 - (UIImage *)decodedImageWithData:(NSData *)data options:(nullable SDImageCoderOptions *)options {
     if (!data) {
         return nil;
     }
+    // 设置缩放因子，默认为1
     CGFloat scale = 1;
     NSNumber *scaleFactor = options[SDImageCoderDecodeScaleFactor];
     if (scaleFactor != nil) {
         scale = MAX([scaleFactor doubleValue], 1);
     }
-    
+    // 设置缩略图大小
     CGSize thumbnailSize = CGSizeZero;
     NSValue *thumbnailSizeValue = options[SDImageCoderDecodeThumbnailPixelSize];
     if (thumbnailSizeValue != nil) {
@@ -268,8 +285,9 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         thumbnailSize = thumbnailSizeValue.CGSizeValue;
 #endif
     }
-    
+    // 是否保持长宽比
     BOOL preserveAspectRatio = YES;
+    // 根据用户设置
     NSNumber *preserveAspectRatioValue = options[SDImageCoderDecodePreserveAspectRatio];
     if (preserveAspectRatioValue != nil) {
         preserveAspectRatio = preserveAspectRatioValue.boolValue;
@@ -287,20 +305,23 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         return animatedImage;
     }
 #endif
-    
+    // 用data创建source
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
     if (!source) {
         return nil;
     }
+    // 获取图片数量
     size_t count = CGImageSourceGetCount(source);
     UIImage *animatedImage;
-    
+    // 是否只解码第一帧
     BOOL decodeFirstFrame = [options[SDImageCoderDecodeFirstFrameOnly] boolValue];
+    // 如果只解码第一帧或者图片数量<=1，那么就直接获取第一帧图片就可以了
     if (decodeFirstFrame || count <= 1) {
+        // 创建一帧图片，根据source，索引，缩放因子，是否保持长宽比
         animatedImage = [self.class createFrameAtIndex:0 source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize options:nil];
     } else {
         NSMutableArray<SDImageFrame *> *frames = [NSMutableArray array];
-        
+        //根据获得的资源中的count来遍历图片ref
         for (size_t i = 0; i < count; i++) {
             UIImage *image = [self.class createFrameAtIndex:i source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize options:nil];
             if (!image) {
@@ -308,13 +329,13 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
             }
             
             NSTimeInterval duration = [self.class frameDurationAtIndex:i source:source];
-            
+            // 创建每一帧图片
             SDImageFrame *frame = [SDImageFrame frameWithImage:image duration:duration];
             [frames addObject:frame];
         }
         
         NSUInteger loopCount = [self.class imageLoopCountWithSource:source];
-        
+        // 根据帧组创建一个动图
         animatedImage = [SDImageCoderHelper animatedImageWithFrames:frames];
         animatedImage.sd_imageLoopCount = loopCount;
     }
@@ -329,7 +350,10 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
 - (BOOL)canIncrementalDecodeFromData:(NSData *)data {
     return ([NSData sd_imageFormatForImageData:data] == self.class.imageFormat);
 }
-
+// 创建一个渐进式图片加载
+// https://cloud.tencent.com/developer/article/1186094
+// https://juejin.im/post/5d9d7dbef265da5b9764be3c
+// 在下载图片的时候，可以渐进式下载图片，避免内存高峰
 - (instancetype)initIncrementalWithOptions:(nullable SDImageCoderOptions *)options {
     self = [super init];
     if (self) {
@@ -363,7 +387,7 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     }
     return self;
 }
-
+// 在下载的过程中，不断的更新数据
 - (void)updateIncrementalData:(NSData *)data finished:(BOOL)finished {
     if (_finished) {
         return;
@@ -375,8 +399,9 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     // Thanks to the author @Nyx0uf
     
     // Update the data source, we must pass ALL the data, not just the new bytes
+    // 向 _imageSource 更新数据，要注意的是这里需要每次传入全部图片数据，而非增量图片数据
     CGImageSourceUpdateData(_imageSource, (__bridge CFDataRef)data, finished);
-    
+    //  如果 _width 和 _height 为0，则需要从 _imageSource 中获取一次数据
     if (_width + _height == 0) {
         NSDictionary *options = @{
             (__bridge NSString *)kCGImageSourceShouldCacheImmediately : @(YES),
@@ -395,7 +420,7 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     // For animated image progressive decoding because the frame count and duration may be changed.
     [self scanAndCheckFramesValidWithImageSource:_imageSource];
 }
-
+// 图片下载完成后，通过此方法返回
 - (UIImage *)incrementalDecodedImageWithOptions:(SDImageCoderOptions *)options {
     UIImage *image;
     
@@ -435,7 +460,9 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     }
     
     NSMutableData *imageData = [NSMutableData data];
+    // 获取图片原生类型字符串
     CFStringRef imageUTType = [NSData sd_UTTypeFromImageFormat:format];
+    // 将图片转化为动图数组
     NSArray<SDImageFrame *> *frames = [SDImageCoderHelper framesFromAnimatedImage:image];
     
     // Create an image destination. Animated Image does not support EXIF image orientation TODO
@@ -447,11 +474,14 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     }
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     // Encoding Options
+    // Encoding Options
+    //介于0-1.0之间的双精度值，表示生成图像数据的编码压缩质量。1.0不产生压缩，0.0产生可能的最大压缩。如果没有提供，使用1.0。(NSNumber)
     double compressionQuality = 1;
     if (options[SDImageCoderEncodeCompressionQuality]) {
         compressionQuality = [options[SDImageCoderEncodeCompressionQuality] doubleValue];
     }
     properties[(__bridge NSString *)kCGImageDestinationLossyCompressionQuality] = @(compressionQuality);
+    // 一个UIColor(NSColor)值用于非alpha图像编码当输入图像有alpha通道时，背景颜色将被用来组成alpha通道。如果没有，使用白色。
     CGColorRef backgroundColor = [options[SDImageCoderEncodeBackgroundColor] CGColor];
     if (backgroundColor) {
         properties[(__bridge NSString *)kCGImageDestinationBackgroundColor] = (__bridge id)(backgroundColor);
@@ -478,6 +508,9 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
         }
         properties[(__bridge NSString *)kCGImageDestinationImageMaxPixelSize] = @(finalPixelSize);
     }
+    // 图片下载完编码的最大大小
+    // NSUInteger值指定编码后的最大输出数据字节大小。一些有损格式，如JPEG/HEIF支持提示编解码器，以自动降低质量和匹配的文件大小，你想要。注意，这个选项将覆盖' SDImageCoderEncodeCompressionQuality '，因为现在质量是由编码器决定的。(NSNumber)
+    // @note这是一个提示，由于压缩算法的限制，不能保证输出大小。这个选项对矢量图像不起作用。
     NSUInteger maxFileSize = [options[SDImageCoderEncodeMaxFileSize] unsignedIntegerValue];
     if (maxFileSize > 0) {
         properties[kSDCGImageDestinationRequestedFileSize] = @(maxFileSize);
@@ -488,14 +521,18 @@ static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestination
     if (options[SDImageCoderEncodeEmbedThumbnail]) {
         embedThumbnail = [options[SDImageCoderEncodeEmbedThumbnail] boolValue];
     }
+    /*为JPEG和HEIF启用或禁用缩略图嵌入。
+       *值应为kCFBooleanTrue或kCFBooleanFalse。默认值为kCFBooleanFalse */
     properties[(__bridge NSString *)kCGImageDestinationEmbedThumbnail] = @(embedThumbnail);
     
     BOOL encodeFirstFrame = [options[SDImageCoderEncodeFirstFrameOnly] boolValue];
     if (encodeFirstFrame || frames.count == 0) {
         // for static single images
+        //获取一个单一的图片
         CGImageDestinationAddImage(imageDestination, imageRef, (__bridge CFDictionaryRef)properties);
     } else {
         // for animated images
+        //获取分类中添加的sd_imageLoopCount数量
         NSUInteger loopCount = image.sd_imageLoopCount;
         NSDictionary *containerProperties = @{
             self.class.dictionaryProperty: @{self.class.loopCountProperty : @(loopCount)}

@@ -42,6 +42,14 @@
 
 @end
 
+//SDWebImageDownloaderOperation继承自NSOperation
+//
+//（1）、并行执行NSOperation,管理executing，finished等各种属性的处理，手动触发KVO。
+//
+//（2）、重写start、cancel方法用来触发网络请求以及取消请求
+//
+//（3）、在NSURLSessionDataDelegate等代理方法中对数据进行加载，并验证当前的https请求是否有效，获取数据之后的数据拼接处理并回调block，发送请求数据状态的通知
+
 
 /**
  The download operation class for SDWebImageDownloader.

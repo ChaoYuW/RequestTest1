@@ -47,6 +47,7 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
 
 - (BOOL)containsDataForKey:(NSString *)key {
     NSParameterAssert(key);
+    //查询文件路径
     NSString *filePath = [self cachePathForKey:key];
     BOOL exists = [self.fileManager fileExistsAtPath:filePath];
     
@@ -69,6 +70,7 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
     
     // fallback because of https://github.com/rs/SDWebImage/pull/976 that added the extension to the disk file name
     // checking the key with and without the extension
+    // 可能没有 path extension
     data = [NSData dataWithContentsOfFile:filePath.stringByDeletingPathExtension options:self.config.diskCacheReadingOptions error:nil];
     if (data) {
         return data;
@@ -81,17 +83,21 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
     NSParameterAssert(data);
     NSParameterAssert(key);
     if (![self.fileManager fileExistsAtPath:self.diskCachePath]) {
+        //假如文件不存在，那么生成一个文件夹，
         [self.fileManager createDirectoryAtPath:self.diskCachePath withIntermediateDirectories:YES attributes:nil error:NULL];
     }
     
     // get cache Path for image key
+    //拼接url字符串生成key
     NSString *cachePathForKey = [self cachePathForKey:key];
     // transform to NSURL
+    //文件地址
     NSURL *fileURL = [NSURL fileURLWithPath:cachePathForKey];
     
     [data writeToURL:fileURL options:self.config.diskCacheWritingOptions error:nil];
     
     // disable iCloud backup
+    //不包含iiCloud
     if (self.config.shouldDisableiCloud) {
         // ignore iCloud backup resource value error
         [fileURL setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:nil];
@@ -138,10 +144,13 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
 }
 
 - (void)removeExpiredData {
+    //disk路径
     NSURL *diskCacheURL = [NSURL fileURLWithPath:self.diskCachePath isDirectory:YES];
     
+    //获取Content的内容修改日期key
     // Compute content date key to be used for tests
     NSURLResourceKey cacheContentDateKey = NSURLContentModificationDateKey;
+    //默认是修改日期 SDImageCacheConfigExpireTypeModificationDate
     switch (self.config.diskCacheExpireType) {
         case SDImageCacheConfigExpireTypeAccessDate:
             cacheContentDateKey = NSURLContentAccessDateKey;
@@ -160,13 +169,13 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
     }
     
     NSArray<NSString *> *resourceKeys = @[NSURLIsDirectoryKey, cacheContentDateKey, NSURLTotalFileAllocatedSizeKey];
-    
+    //获取当前diskCacheURL路径下，所有的resourceKeys对应的值，并且过滤隐藏文件
     // This enumerator prefetches useful properties for our cache files.
     NSDirectoryEnumerator *fileEnumerator = [self.fileManager enumeratorAtURL:diskCacheURL
                                                includingPropertiesForKeys:resourceKeys
                                                                   options:NSDirectoryEnumerationSkipsHiddenFiles
                                                              errorHandler:NULL];
-    
+    //默认是一周，获取到现在为止过期时间节点
     NSDate *expirationDate = (self.config.maxDiskAge < 0) ? nil: [NSDate dateWithTimeIntervalSinceNow:-self.config.maxDiskAge];
     NSMutableDictionary<NSURL *, NSDictionary<NSString *, id> *> *cacheFiles = [NSMutableDictionary dictionary];
     NSUInteger currentCacheSize = 0;
@@ -175,6 +184,7 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
     //
     //  1. Removing files that are older than the expiration date.
     //  2. Storing file attributes for the size-based cleanup pass.
+    //移除比过期时间节点还老的文件
     NSMutableArray<NSURL *> *urlsToDelete = [[NSMutableArray alloc] init];
     for (NSURL *fileURL in fileEnumerator) {
         NSError *error;
@@ -186,6 +196,7 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
         }
         
         // Remove files that are older than the expiration date;
+        //获取url路径下文件的修改日期
         NSDate *modifiedDate = resourceValues[cacheContentDateKey];
         if (expirationDate && [[modifiedDate laterDate:expirationDate] isEqualToDate:expirationDate]) {
             [urlsToDelete addObject:fileURL];
@@ -193,22 +204,24 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
         }
         
         // Store a reference to this file and account for its total size.
+        //记录当前磁盘中的文件大小
         NSNumber *totalAllocatedSize = resourceValues[NSURLTotalFileAllocatedSizeKey];
         currentCacheSize += totalAllocatedSize.unsignedIntegerValue;
         cacheFiles[fileURL] = resourceValues;
     }
-    
+    //开始移除指定路径下的文件
     for (NSURL *fileURL in urlsToDelete) {
         [self.fileManager removeItemAtURL:fileURL error:nil];
     }
     
     // If our remaining disk cache exceeds a configured maximum size, perform a second
     // size-based cleanup pass.  We delete the oldest files first.
+    //如果磁盘占用的大小超过了磁盘占用的上线maxDiskSize,又会对磁盘清理
     NSUInteger maxDiskSize = self.config.maxDiskSize;
     if (maxDiskSize > 0 && currentCacheSize > maxDiskSize) {
         // Target half of our maximum cache size for this cleanup pass.
         const NSUInteger desiredCacheSize = maxDiskSize / 2;
-        
+        //按照修改顺序对文件进行排序
         // Sort the remaining cache files by their last modification time or last access time (oldest first).
         NSArray<NSURL *> *sortedFiles = [cacheFiles keysSortedByValueWithOptions:NSSortConcurrent
                                                                  usingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -216,6 +229,7 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
                                                                  }];
         
         // Delete files until we fall below our desired cache size.
+        //删除旧文件
         for (NSURL *fileURL in sortedFiles) {
             if ([self.fileManager removeItemAtURL:fileURL error:nil]) {
                 NSDictionary<NSString *, id> *resourceValues = cacheFiles[fileURL];
@@ -234,20 +248,23 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
     NSParameterAssert(key);
     return [self cachePathForKey:key inPath:self.diskCachePath];
 }
-
+//磁盘总大小
 - (NSUInteger)totalSize {
     NSUInteger size = 0;
+    //文件的地址数组
     NSDirectoryEnumerator *fileEnumerator = [self.fileManager enumeratorAtPath:self.diskCachePath];
     for (NSString *fileName in fileEnumerator) {
         NSString *filePath = [self.diskCachePath stringByAppendingPathComponent:fileName];
+        //获取当前文件地址下的attributes属性字典
         NSDictionary<NSString *, id> *attrs = [self.fileManager attributesOfItemAtPath:filePath error:nil];
         size += [attrs fileSize];
     }
     return size;
 }
-
+//总的文件个数
 - (NSUInteger)totalCount {
     NSUInteger count = 0;
+    //文件的地址数组
     NSDirectoryEnumerator *fileEnumerator = [self.fileManager enumeratorAtPath:self.diskCachePath];
     count = fileEnumerator.allObjects.count;
     return count;
@@ -304,11 +321,14 @@ static NSString * const SDDiskCacheExtendedAttributeName = @"com.hackemist.SDDis
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 static inline NSString * _Nonnull SDDiskCacheFileNameForKey(NSString * _Nullable key) {
+    //KEY中除了url信息之外，还有我们的context中的key比如 url-SDImageRoundCornerTransformer（400.000000，1，10.000000，#ff0000ff）
     const char *str = key.UTF8String;
     if (str == NULL) {
         str = "";
     }
+    //16位的MD5值
     unsigned char r[CC_MD5_DIGEST_LENGTH];
+    //对key进行MD5加密处理
     CC_MD5(str, (CC_LONG)strlen(str), r);
     NSURL *keyURL = [NSURL URLWithString:key];
     NSString *ext = keyURL ? keyURL.pathExtension : key.pathExtension;
