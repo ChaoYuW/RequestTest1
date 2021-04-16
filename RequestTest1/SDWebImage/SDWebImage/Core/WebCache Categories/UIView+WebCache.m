@@ -109,7 +109,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
             mutableContext[SDWebImageContextCustomManager] = nil;
             context = [mutableContext copy];
         }
-        //开始封装下载progerees的block，用于会掉
+        //开始封装下载progerees的block，用于回调
         SDImageLoaderProgressBlock combinedProgressBlock = ^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
             //不断更新当前imageProgress进度
             if (imageProgress) {

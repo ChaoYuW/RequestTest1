@@ -55,22 +55,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4BD8F217-A680-43AC-A000-75C157B80816"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RequestTest1/SDWebImage/SDWebImage/Core/WebCache Categories/UIView+WebCache.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "-sd_internalSetImageWithURL:placeholderImage:options:context:setImageBlock:progress:completed:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "83EE3FF2-8522-4B60-9ACB-4B4380FDF637"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -80,38 +64,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "62"
             endingLineNumber = "62"
-            landmarkName = "-sd_internalSetImageWithURL:placeholderImage:options:context:setImageBlock:progress:completed:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "85F07234-02A7-4B3A-A8F6-D5F8559F84CE"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RequestTest1/SDWebImage/SDWebImage/Core/WebCache Categories/UIView+WebCache.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "-sd_internalSetImageWithURL:placeholderImage:options:context:setImageBlock:progress:completed:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "9AB7E23D-F964-4C84-8BF7-DF8856E343EC"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RequestTest1/SDWebImage/SDWebImage/Core/WebCache Categories/UIView+WebCache.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
             landmarkName = "-sd_internalSetImageWithURL:placeholderImage:options:context:setImageBlock:progress:completed:"
             landmarkType = "7">
          </BreakpointContent>
@@ -135,38 +87,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CBC8B017-6A5C-4576-A2B4-D2287CCBBF5C"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RequestTest1/SDWebImage/SDWebImage/Core/WebCache Categories/UIView+WebCache.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
-            landmarkName = "-sd_internalSetImageWithURL:placeholderImage:options:context:setImageBlock:progress:completed:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D3C3D4F9-1C0F-462D-A57E-BE22ACEC9FBD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RequestTest1/SDWebImage/SDWebImage/Core/WebCache Categories/UIView+WebCache.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
-            landmarkName = "-sd_internalSetImageWithURL:placeholderImage:options:context:setImageBlock:progress:completed:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "A0D4DB84-92D0-4B47-A38E-0A1D05D9CF88"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -177,22 +97,6 @@
             startingLineNumber = "143"
             endingLineNumber = "143"
             landmarkName = "-sd_internalSetImageWithURL:placeholderImage:options:context:setImageBlock:progress:completed:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1E7B86D0-842D-4DF1-871D-684DD08882F2"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RequestTest1/SDWebImage/SDWebImage/Core/Categories/UIView+WebCacheOperation.m"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "70"
-            endingLineNumber = "70"
-            landmarkName = "-sd_cancelImageLoadOperationWithKey:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
