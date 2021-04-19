@@ -477,6 +477,7 @@
     // First check the in-memory cache...
     UIImage *image;
     if (queryCacheType != SDImageCacheTypeDisk) {
+//        首先检查内存缓存…
         image = [self imageFromMemoryCacheForKey:key];
     }
     
@@ -510,6 +511,7 @@
     }
     
     // Second check the disk cache...
+    //第二，检查磁盘缓存…
     NSOperation *operation = [NSOperation new];
     // Check whether we need to synchronously query disk
     // 1. in-memory cache hit & memoryDataSync

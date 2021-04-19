@@ -36,13 +36,16 @@
 @end
 
 @implementation AFCachedImage
-
+//生成一个image 计算占用空间的大小和最后的访问日期
 - (instancetype)initWithImage:(UIImage *)image identifier:(NSString *)identifier {
     if (self = [self init]) {
         self.image = image;
         self.identifier = identifier;
 
         CGSize imageSize = CGSizeMake(image.size.width * image.scale, image.size.height * image.scale);
+        //每一个像素是rgba 所以空间大小 = 像素个数*4
+        //为什么一个像素占4bytes呢？因为rgba(255,255,2552,1);
+        //一个255需要8位，3个需要3个8位，最后一个最大值是1，根据内存对齐，占用为4*8/8=4byte
         CGFloat bytesPerPixel = 4.0;
         CGFloat bytesPerSize = imageSize.width * imageSize.height;
         self.totalBytes = (UInt64)bytesPerPixel * (UInt64)bytesPerSize;
@@ -104,7 +107,10 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
+//队列中同步执行 返回当前内存使用大小 为什么同步呢?
+//因为没有计算，只是读取值大小，只需在队列中同步执行即可。
+//同步不会锁死？不是mainqueue，不会锁死。
+// 多读单写
 - (UInt64)memoryUsage {
     __block UInt64 result = 0;
     dispatch_sync(self.synchronizationQueue, ^{
@@ -112,6 +118,11 @@
     });
     return result;
 }
+/**添加图片，这里使用的是栅栏函数，主要就是多读单写，这里添加图片，相当于写，单写的，每次添加图片额时候,根据ID判断缓存中是否有缓存，如果有，那么就先将当前总共占用额缓存减去已经存在的ID对应额那个图片额缓
+存，然后将新的ID图片添加到缓存，然后当前总缓存加上新的图片额缓存，接下来，判断当前的总缓存，是不是超过我们
+预定号的总额memoryCapacity缓存，如果超过，就遍历所有图片，根据访问时间进行淘汰，直到剩余preferredMem
+oryUsageAfterPurge这么大为止，可以比这个值小，那么就符合要求了
+ */
 // 缓存 : 下载 --> 图片 + id
 - (void)addImage:(UIImage *)image withIdentifier:(NSString *)identifier {
     // 来了老弟,栅栏函数来了
@@ -126,13 +137,14 @@
         self.cachedImages[identifier] = cacheImage;
         self.currentMemoryUsage += cacheImage.totalBytes;
     });
+    //通过栅栏函数异步执行 刷新内存image
     // 每次添加图片之后都会判定是否超出规定的最大内存空间
     dispatch_barrier_async(self.synchronizationQueue, ^{
         if (self.currentMemoryUsage > self.memoryCapacity) {
             // 需要清理的内存大小
             UInt64 bytesToPurge = self.currentMemoryUsage - self.preferredMemoryUsageAfterPurge;
             NSMutableArray <AFCachedImage*> *sortedImages = [NSMutableArray arrayWithArray:self.cachedImages.allValues];
-            // 按照lastAccessDate属性进行排序
+            // 按照时间lastAccessDate属性进行排序
             NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastAccessDate"
                                                                            ascending:YES];
             [sortedImages sortUsingDescriptors:@[sortDescriptor]];
@@ -155,6 +167,7 @@
 
 - (BOOL)removeImageWithIdentifier:(NSString *)identifier {
     __block BOOL removed = NO;
+    //栅栏函数 同步执行删除操作 占用内存大小更新
     dispatch_barrier_sync(self.synchronizationQueue, ^{
         AFCachedImage *cachedImage = self.cachedImages[identifier];
         if (cachedImage != nil) {
@@ -165,7 +178,7 @@
     });
     return removed;
 }
-
+//栅栏函数同步删除all image 当前使用内存大小设置为0
 - (BOOL)removeAllImages {
     __block BOOL removed = NO;
     dispatch_barrier_sync(self.synchronizationQueue, ^{

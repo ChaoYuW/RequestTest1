@@ -95,6 +95,10 @@
 		E5128794260AD01900E6ED50 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = E5128780260AD01900E6ED50 /* AFURLRequestSerialization.m */; };
 		E5128795260AD01900E6ED50 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5128782260AD01900E6ED50 /* AFNetworkReachabilityManager.m */; };
 		E5128796260AD01900E6ED50 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = E5128783260AD01900E6ED50 /* AFSecurityPolicy.m */; };
+		E5395744262D53B40042E431 /* YYDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E539573C262D53B40042E431 /* YYDiskCache.m */; };
+		E5395745262D53B40042E431 /* YYCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E539573E262D53B40042E431 /* YYCache.m */; };
+		E5395746262D53B40042E431 /* YYKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = E5395742262D53B40042E431 /* YYKVStorage.m */; };
+		E5395747262D53B40042E431 /* YYMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E5395743262D53B40042E431 /* YYMemoryCache.m */; };
 		E5A3491919B55DF300AC8856 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A3491819B55DF300AC8856 /* Foundation.framework */; };
 		E5A3491B19B55DF300AC8856 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A3491A19B55DF300AC8856 /* CoreGraphics.framework */; };
 		E5A3491D19B55DF300AC8856 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A3491C19B55DF300AC8856 /* UIKit.framework */; };
@@ -301,6 +305,14 @@
 		E5128783260AD01900E6ED50 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
 		E5128784260AD01900E6ED50 /* AFCompatibilityMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFCompatibilityMacros.h; sourceTree = "<group>"; };
 		E5128785260AD01900E6ED50 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
+		E539573C262D53B40042E431 /* YYDiskCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYDiskCache.m; sourceTree = "<group>"; };
+		E539573D262D53B40042E431 /* YYKVStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYKVStorage.h; sourceTree = "<group>"; };
+		E539573E262D53B40042E431 /* YYCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCache.m; sourceTree = "<group>"; };
+		E539573F262D53B40042E431 /* YYMemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYMemoryCache.h; sourceTree = "<group>"; };
+		E5395740262D53B40042E431 /* YYDiskCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYDiskCache.h; sourceTree = "<group>"; };
+		E5395741262D53B40042E431 /* YYCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCache.h; sourceTree = "<group>"; };
+		E5395742262D53B40042E431 /* YYKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYKVStorage.m; sourceTree = "<group>"; };
+		E5395743262D53B40042E431 /* YYMemoryCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYMemoryCache.m; sourceTree = "<group>"; };
 		E5A3491519B55DF300AC8856 /* RequestTest1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RequestTest1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5A3491819B55DF300AC8856 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E5A3491A19B55DF300AC8856 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -423,6 +435,7 @@
 		E512875F260ACFE600E6ED50 /* otherLib */ = {
 			isa = PBXGroup;
 			children = (
+				E539573B262D53B40042E431 /* YYCache */,
 				E51115B12624291B00F84BAA /* SDWebImage */,
 				E5128760260AD01900E6ED50 /* AFNetworking */,
 			);
@@ -703,6 +716,21 @@
 			path = "WebCache Categories";
 			sourceTree = "<group>";
 		};
+		E539573B262D53B40042E431 /* YYCache */ = {
+			isa = PBXGroup;
+			children = (
+				E5395741262D53B40042E431 /* YYCache.h */,
+				E539573E262D53B40042E431 /* YYCache.m */,
+				E5395740262D53B40042E431 /* YYDiskCache.h */,
+				E539573C262D53B40042E431 /* YYDiskCache.m */,
+				E539573D262D53B40042E431 /* YYKVStorage.h */,
+				E5395742262D53B40042E431 /* YYKVStorage.m */,
+				E539573F262D53B40042E431 /* YYMemoryCache.h */,
+				E5395743262D53B40042E431 /* YYMemoryCache.m */,
+			);
+			path = YYCache;
+			sourceTree = "<group>";
+		};
 		E5A3490C19B55DF300AC8856 = {
 			isa = PBXGroup;
 			children = (
@@ -880,6 +908,7 @@
 			files = (
 				E51116832624291C00F84BAA /* SDDeviceHelper.m in Sources */,
 				E5128793260AD01900E6ED50 /* AFURLSessionManager.m in Sources */,
+				E5395745262D53B40042E431 /* YYCache.m in Sources */,
 				E5128788260AD01900E6ED50 /* UIProgressView+AFNetworking.m in Sources */,
 				E5A3492919B55DF300AC8856 /* AppDelegate.m in Sources */,
 				E51116822624291C00F84BAA /* SDImageAssetManager.m in Sources */,
@@ -896,8 +925,10 @@
 				E5128792260AD01900E6ED50 /* AFHTTPSessionManager.m in Sources */,
 				E5128794260AD01900E6ED50 /* AFURLRequestSerialization.m in Sources */,
 				E51116532624291C00F84BAA /* SDAnimatedImagePlayer.m in Sources */,
+				E5395744262D53B40042E431 /* YYDiskCache.m in Sources */,
 				E511167E2624291C00F84BAA /* UIButton+WebCache.m in Sources */,
 				E511168A2624291C00F84BAA /* SDAssociatedObject.m in Sources */,
+				E5395746262D53B40042E431 /* YYKVStorage.m in Sources */,
 				E511165B2624291C00F84BAA /* SDImageCodersManager.m in Sources */,
 				E5128791260AD01900E6ED50 /* AFURLResponseSerialization.m in Sources */,
 				E51116752624291C00F84BAA /* SDImageCacheDefine.m in Sources */,
@@ -918,6 +949,7 @@
 				E51116632624291C00F84BAA /* SDImageCoderHelper.m in Sources */,
 				E51116472624291C00F84BAA /* SDImageHEICCoder.m in Sources */,
 				E51116722624291C00F84BAA /* NSData+ImageContentType.m in Sources */,
+				E5395747262D53B40042E431 /* YYMemoryCache.m in Sources */,
 				E512878E260AD01900E6ED50 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				E5128795260AD01900E6ED50 /* AFNetworkReachabilityManager.m in Sources */,
 				E51116862624291C00F84BAA /* SDFileAttributeHelper.m in Sources */,
